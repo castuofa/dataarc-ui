@@ -72,7 +72,7 @@
       <p class="my-2">
         <login @link-clicked="setAction" @close-modal="action = ''; $bvModal.hide('handleUserActions')" v-if="action === 'Sign In'" />
         <register @link-clicked="setAction" @close-modal="action = ''; $bvModal.hide('handleUserActions')" v-if="action === 'Register'" />
-        <forgot-password v-if="action === 'Forgot Password'" />
+        <forgot-password v-if="action === 'Forgot Password'" @close-modal="action = ''; $bvModal.hide('handleUserActions')"/>
         <notice @link-clicked="setAction" v-if="action === 'Notice'" />
       </p>
     </b-modal>
