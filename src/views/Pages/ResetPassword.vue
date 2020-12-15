@@ -1,5 +1,29 @@
 <template>
   <div>
+    <div
+      v-if="submitted && !status.loggedIn && status.error"
+      class="alert alert-danger mt-2"
+      role="alert"
+    >
+      >
+      {{ status.error.message }}
+    </div>
+    <div
+      v-if="submitted && status.success"
+      class="alert alert-success mt-2"
+      role="alert"
+    >
+      >
+      {{ status.success }} Redirecting...
+    </div>
+    <p v-if="passwordErrors.length">
+      <b>Please correct the following error(s):</b>
+      <ul>
+        <li v-for="error in passwordErrors">
+          {{ error }}
+        </li>
+      </ul>
+    </p>
     <form
       class="resetPassword"
       @submit.prevent="handleSubmit()"
@@ -38,17 +62,6 @@
         Reset Password
       </button>
     </form>
-    <div
-      v-if="submitted && !status.loggedIn && status.error"
-      class="alert alert-danger mt-2"
-      role="alert"
-    >
-      >
-      {{ status.error.message }}
-    </div>
-    <debug>
-      Status: {{ status }}
-    </debug>
   </div>
 </template>
 
@@ -60,17 +73,24 @@ export default {
   data() {
     return {
       code: '',
-      email: '',
       password: '',
       passwordConfirmation: '',
       submitted: false,
+      passwordErrors: [],
     }
   },
   computed: {
     ...mapState('account', ['status']),
   },
-  created() {
-    // reset the login status when you reach the login page
+  watch: {
+    status(val) {
+      if (val.success) {
+        setTimeout(() => this.$router.push('/'), 1500)
+      }
+    },
+  },
+  mounted() {
+    this.code = this.$route.query.code
   },
   methods: {
     ...mapActions('account', ['resetPassword']),
@@ -78,9 +98,18 @@ export default {
     handleSubmit() {
       this.submitted = true
       const { code, password, passwordConfirmation } = this
-      if (code && password && passwordConfirmation) {
-        this.resetPassword( code, password, passwordConfirmation )
+      this.passwordErrors = []
+
+      if (!password) {
+        this.passwordErrors.push('Password required.')
+      } else if (!passwordConfirmation) {
+        this.passwordErrors.push('Confirmation Password required.')
+      } else if (password !== passwordConfirmation) {
+        this.passwordErrors.push('Passwords must match.')
+      } else if (code && password && passwordConfirmation) {
+        this.resetPassword({code, password, passwordConfirmation })
       }
+
     },
   },
 }
