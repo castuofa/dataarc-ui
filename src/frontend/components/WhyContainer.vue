@@ -14,17 +14,32 @@
             <p>
               Why did you get these results? We will explain how the results were obtained in order to provide a level
               of confidence for how the data was processed to produce what you are seeing.
-            </p>
+            </p>            
           </div>
+        </div>        
+        <div class="row">
+          <DartQueryExplainer :filter="filters"/>
         </div>
       </div>
     </div>
+    
   </section>
 </template>
 
 <script>
+import DartQueryExplainer from './why-components/DartQueryExplainer.vue';
+
 export default {
   name: 'WhyContainer',
+  components: {
+    DartQueryExplainer
+  },
+   props: {
+    filters: {
+      type: Object,
+      required: true
+    }
+  },
 }
 </script>
 
