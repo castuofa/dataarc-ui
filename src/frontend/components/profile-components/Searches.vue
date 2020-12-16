@@ -14,13 +14,23 @@
       <b-row class="justify-content-center">
         <b-col class="mt-3 mb-3">
           <b-card no-body class="shadow">
-            <b-table head-variant="light" :fields="fields" :items="searches">
+            <b-table ref="search" responsive head-variant="light" :fields="fields" :items="searches">
               <template v-slot:cell(title)="row">
                 <b-button variant="light" title="Load Saved Search" @click="$emit('load-saved-search', row.item); routeHome()">{{row.item.title}}</b-button>
               </template>
+              <template v-slot:cell(filters)="row">
+                <ul v-for="item, index in row.item.filters" class="text-left" :key="index">
+                  <div v-if="index === 'polygon'">
+                    Polygon [....]
+                  </div>
+                  <div v-else>
+                    {{ item }}
+                  </div>
+                </ul>
+              </template>
               <template v-slot:cell(actions)="row" class="actions">
-                <b-button variant="primary" v-text="'Request Download'" @click="download = row.item"></b-button>
-                <b-button variant="primary" v-text="'Download'" :disabled="true" @click="download = row.item"></b-button>
+                <b-button variant="primary" v-text="'Request Download'" @click="requestDownload(row.item)" :disabled="row.item.process || (row.item.path !== '' && row.item.path !== null)"></b-button>
+                <b-button variant="primary" target="_blank" v-text="'Download'" :disabled="!row.item.path" :href="`${$baseUrl}${row.item.path}`"></b-button>
               </template>
             </b-table>
           </b-card>
@@ -32,18 +42,6 @@
 
 <script>
 import gql from 'graphql-tag'
-
-const searchesQuery = gql`
-  query searches($id: ID!) {
-    searches(where: { user: $id }) {
-      id
-      title
-      description
-      filters
-    }
-    countSearches
-  }
-`
 
 export default {
   props: {
@@ -62,36 +60,71 @@ export default {
         { key: 'description', sortable: true },
         { key: 'filters', sortable: false },
       ],
-      download: {},
-      savedSearch: {}
-    }
-  },
-  watch: {
-    userId(val) {
-      if (val) {
-        this.getSearches()
-      }
     }
   },
   mounted() {
 
   },
+  apollo: {
+    searchesQuery: {
+      query: gql`
+        query searches($id: ID!) {
+          searches(where: { user: $id }) {
+            id
+            title
+            description
+            filters
+            path
+            expires
+          }
+          countSearches
+        }
+      `,
+      variables(val) {
+        return {
+          id: this.userId
+        };
+      },
+      polling: 5000,
+      skip: false,
+      update(data) {
+        return data.searches
+      },
+      result({ data }) {
+        if (data) {
+          let stopQuery = data.searches.filter(search => {
+            if (search.path === null) {
+              return search
+            }
+          });
+          this.searches = data.searches
+          this.count = data.countSearches
+
+          if (stopQuery.length === 0) {
+            this.$apollo.queries.searchesQuery.stopPolling();
+          } else {
+            this.$apollo.queries.searchesQuery.startPolling(5000);
+          }
+        }
+      }
+    }
+  },
   methods: {
     getSearches() {
-      this.$apollo
-      .query({
-        query: searchesQuery,
-        variables: {
-          id: this.userId,
-        },
-      })
-      .then(({ data }) => {
-        this.searches = data.searches
-        this.count = data.countSearches
-      })
+      this.$apollo.queries.searchesQuery.refetch()
     },
     routeHome() {
       this.$router.replace('/')
+    },
+    requestDownload(search) {
+      search.process = true
+      this.$refs.search.refresh()
+      window.axios.put(
+        `${this.$apiUrl}/searches/${search.id}`,
+        search,
+      ).then(({ data }) => {
+        this.getSearches()
+      })
     }
   }
 

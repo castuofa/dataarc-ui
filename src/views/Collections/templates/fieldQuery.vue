@@ -58,6 +58,8 @@ export default {
         {type: 'Contains', value: 'contains'},
         {type: 'Not Contains', value: 'not_contains'},
         {type: 'Greater Than', value: 'greater_than'},
+        {type: 'In', value: 'in'},
+        {type: 'Not In', value: 'not_in'},
         {type: 'Less Than', value: 'less_than'},
         {type: 'Less Than or Equal to', value: 'less_than_or_equal_to'},
         {type: 'Greater Than or Equal to', value: 'greater_than_or_equal_to'},
@@ -73,8 +75,8 @@ export default {
         {type: 'Greater Than or Equal to', value: 'greater_than_or_equal_to'},
       ],
       array: [
-        {type: 'Contains', value: 'contains'},
-        {type: 'Not Contains', value: 'not_contains'},
+        {type: 'In', value: 'in'},
+        {type: 'Not In', value: 'not_in'},
       ],
       string: [
         {type: 'Equals', value: 'equals'},
