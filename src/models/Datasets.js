@@ -1,20 +1,35 @@
 class Datasets {
   constructor(data) {
+    this.formData = ((
+      {
+        title,
+        description,
+        metadata,
+        citation,
+        url,
+        image,
+        source,
+        category,
+        title_layout,
+        summary_layout,
+        details_layout,
+        link_layout
+      }) => (
+      {
+        title,
+        description,
+        metadata,
+        citation,
+        url,
+        image,
+        source,
+        category,
+        title_layout,
+        summary_layout,
+        details_layout,
+        link_layout
+      }))(data);
     this.id = data.id;
-    this.title = data.title;
-    this.description = data.description;
-    this.metadata = data.metadata;
-    this.citation = data.citation;
-    this.url = data.url;
-    this.image = data.image;
-    this.source = data.source;
-    if (data.category) {
-      this.category = data.category;
-    }
-    this.title_layout = data.title_layout;
-    this.summary_layout = data.summary_layout;
-    this.details_layout = data.details_layout;
-    this.link_layout = data.link_layout;
     this.createUrl = `${process.env.VUE_APP_API_URL}/datasets`;
     this.editUrl = `${process.env.VUE_APP_API_URL}/datasets/${this.id}`;
     this.routeUrl = '/contributor/datasets';
@@ -31,7 +46,7 @@ class Datasets {
 
   _update = async () => {
     try {
-      const resp = await axios.put(this.editUrl, this);
+      const resp = await axios.put(this.editUrl, this.formData);
       return resp;
     } catch (err) {
       console.log(err);
