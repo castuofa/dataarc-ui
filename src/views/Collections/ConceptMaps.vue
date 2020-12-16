@@ -67,7 +67,7 @@
               <b-button
                 variant="primary"
                 :disabled="row.item.process || !row.item.source"
-                @click="process(row.item, component)"
+                @click="setProcess(row.item, component)"
                 v-text="'Process'"
               />
               <b-button
