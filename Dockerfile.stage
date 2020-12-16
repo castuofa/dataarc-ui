@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN yarn install
 COPY . .
-RUN yarn stage
+RUN yarn build
 
 # production
 FROM nginx:stable-alpine as production
