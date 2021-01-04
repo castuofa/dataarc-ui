@@ -604,7 +604,6 @@ const apollo = {
             properties
           }
           matched_count
-          total_count
         }
       }
     `,
