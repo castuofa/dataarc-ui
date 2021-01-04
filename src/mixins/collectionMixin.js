@@ -467,9 +467,12 @@ const apollo = {
     // Optional result hook
     result({ data, loading, networkStatus }) {
       if (data && data.datasets) {
-        this.currentDataset = data.datasets[0];
-        this.fieldsCount = this.currentDataset.fields.length;
-        this.combinatorsCount = this.currentDataset.combinators.length;
+        [this.currentDataset] = data.datasets;
+        if (this.$route.name === 'Update Combinator') {
+          this.datasets = [this.currentDataset]
+        }
+        this.fieldsCount = this.currentDataset.fields_count;
+        this.combinatorsCount = this.currentDataset.combinators_count;
       }
     },
     // Error handling
