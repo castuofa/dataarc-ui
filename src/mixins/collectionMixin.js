@@ -583,7 +583,7 @@ const apollo = {
         this.$apollo.queries.dataset.skip = false;
         this.model.type = this.collectionType;
         this.model.action = this.action;
-        this.loading = false;
+        this.$apollo.queries.queryResults.skip = false;
       }
     },
     // Error handling
