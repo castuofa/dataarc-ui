@@ -140,8 +140,9 @@ const apollo = {
           }
         }
         if (
-          this.rows !== data.countConcepts &&
-          this.component !== 'ConceptMap View'
+          this.rows !== data.countConcepts
+          && this.component !== 'ConceptMap View'
+          && this.component !== 'CRUD'
         ) {
           this.rows = data.countConcepts;
         }
@@ -810,10 +811,12 @@ const methods = {
       this[`current${component}Page`] = val;
     } else {
       this.currentPage = val;
-      let array = this.lcFirst(component);
-      this[`${array}Loading`] =
-        this.currentPage * this.perPage - (this.perPage - 1) >
-        this[array].length;
+      if (component) {
+        let array = this.lcFirst(component);
+        this[`${array}Loading`] =
+          this.currentPage * this.perPage - (this.perPage - 1) >
+          this[array].length;
+      }
     }
   },
   updateLimit(val, component) {
