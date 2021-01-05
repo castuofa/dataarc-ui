@@ -6,7 +6,7 @@
           <h2>
             Filters
             <sup><a
-              href="https://dataarc-demo.readthedocs.io/en/latest/dataarc-tool-help.html#filters-download-data"
+              :href="$helpUrls.filter"
               title="Read instructions on how to use the tool"
               class="text-dark"
               target="_blank"

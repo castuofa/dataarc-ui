@@ -9,6 +9,12 @@
           <div class="col-lg-8 mx-auto text-center">
             <h2 class="section-heading">
               Why
+              <sup><a
+                :href="$helpUrls.why"
+                title="Read instructions on how to use the tool"
+                class="text-dark"
+                target="_blank"
+                data-toggle="tooltip"><b-icon-file-earmark-text /></a></sup>
             </h2>
             <hr class="primary">
             <p>

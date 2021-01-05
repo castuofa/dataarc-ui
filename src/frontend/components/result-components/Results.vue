@@ -9,7 +9,7 @@
           <h2 v-else class="text-capitalize">
             Results ({{ resultType }} Results)
             <sup><a
-              href="https://dataarc-demo.readthedocs.io/en/latest/dataarc-tool-help.html#interpreting-results-why-do-i-have-three-sets-of-results"
+              :href="$helpUrls.results"
               title="Read instructions on how to use the tool"
               class="text-dark"
               target="_blank"
