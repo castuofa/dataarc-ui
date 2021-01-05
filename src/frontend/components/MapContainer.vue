@@ -25,7 +25,7 @@
             <sup><b-button
               size="sm"
               variant="transparent"
-              @click="$emit('load-video', 'Results_111320.mp4')"
+              @click="$emit('load-video', 'spatial')"
               title="Watch a quick demo of the tool"
               class="text-dark p-0 pb-1"
               data-toggle="tooltip"

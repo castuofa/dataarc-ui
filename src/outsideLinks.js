@@ -9,10 +9,10 @@ const outsideLinks = {
     why: 'https://dataarc-demo.readthedocs.io/en/latest/dataarc-tool-help.html#why-a-powerful-visualization-tool-for-understanding-your-results',
   },
   demoVids: {
-    conceptual: 'https://vimeo.com/497062051',
-    spatial: 'https://vimeo.com/497062088',
-    results: 'https://vimeo.com/497062109',
-    temporal: 'https://vimeo.com/497062141',
+    conceptual: 'https://player.vimeo.com/video/497062051',
+    spatial: 'https://player.vimeo.com/video/497062088',
+    results: 'https://player.vimeo.com/video/497062109',
+    temporal: 'https://player.vimeo.com/video/497062141',
   },
   source: {
     metadata: 'https://github.com/castuofa/dataarc-source/tree/main/',
