@@ -69,7 +69,9 @@ export default {
     },
   },
   mounted() {
-    this.$apollo.queries.allCombinators.skip = false
+    if (!this.$route.params.id && this.$route.name !== 'Create Combinator') {
+      this.$apollo.queries.allCombinators.skip = false
+    }
   },
 }
 </script>

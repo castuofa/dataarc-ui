@@ -16,7 +16,7 @@
               data-toggle="tooltip"
             ><b-icon-info-circle-fill /></a></sup>
             <sup><a
-              href="https://dataarc-demo.readthedocs.io/en/latest/#getting-started"
+              :href="$helpUrls.spatial"
               title="Read instructions on how to use the tool"
               class="text-dark"
               target="_blank"

@@ -140,8 +140,9 @@ const apollo = {
           }
         }
         if (
-          this.rows !== data.countConcepts &&
-          this.component !== 'ConceptMap View'
+          this.rows !== data.countConcepts
+          && this.component !== 'ConceptMap View'
+          && this.component !== 'CRUD'
         ) {
           this.rows = data.countConcepts;
         }
@@ -466,9 +467,12 @@ const apollo = {
     // Optional result hook
     result({ data, loading, networkStatus }) {
       if (data && data.datasets) {
-        this.currentDataset = data.datasets[0];
-        this.fieldsCount = this.currentDataset.fields.length;
-        this.combinatorsCount = this.currentDataset.combinators.length;
+        [this.currentDataset] = data.datasets;
+        if (this.$route.name === 'Update Combinator') {
+          this.datasets = [this.currentDataset]
+        }
+        this.fieldsCount = this.currentDataset.fields_count;
+        this.combinatorsCount = this.currentDataset.combinators_count;
       }
     },
     // Error handling
@@ -583,7 +587,7 @@ const apollo = {
         this.$apollo.queries.dataset.skip = false;
         this.model.type = this.collectionType;
         this.model.action = this.action;
-        this.loading = false;
+        this.$apollo.queries.queryResults.skip = false;
       }
     },
     // Error handling
@@ -604,7 +608,6 @@ const apollo = {
             properties
           }
           matched_count
-          total_count
         }
       }
     `,
@@ -811,10 +814,12 @@ const methods = {
       this[`current${component}Page`] = val;
     } else {
       this.currentPage = val;
-      let array = this.lcFirst(component);
-      this[`${array}Loading`] =
-        this.currentPage * this.perPage - (this.perPage - 1) >
-        this[array].length;
+      if (component) {
+        let array = this.lcFirst(component);
+        this[`${array}Loading`] =
+          this.currentPage * this.perPage - (this.perPage - 1) >
+          this[array].length;
+      }
     }
   },
   updateLimit(val, component) {

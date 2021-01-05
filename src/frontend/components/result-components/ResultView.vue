@@ -201,7 +201,7 @@
                   </b-row>
                   <br>
                   <b-row v-if="currentDataset.metadata">
-                    <b-button :href="'https://raw.githubusercontent.com/castuofa/dataarc-source/main/'+currentDataset.metadata">View Metadata</b-button>
+                    <b-button :href="$sourceUrls.metadata+currentDataset.metadata">View Metadata</b-button>
                   </b-row>
                 </b-container>
               </b-col>
