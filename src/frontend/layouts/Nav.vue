@@ -4,12 +4,8 @@
     class="navbar navbar-expand-lg navbar-light navbar-shrink fixed-top"
   >
     <div class="container">
-      <b-navbar-brand class="navbar-brand js-scroll-trigger" href="/"
-        >DataARC</b-navbar-brand
-      >
-      <a class="navbar-about btn btn-sm btn-outline-dark" href="/about"
-        >About Our Data</a
-      >
+      <b-navbar-brand class="navbar-brand js-scroll-trigger" href="/">DataARC</b-navbar-brand>
+      <a class="navbar-about btn btn-sm btn-outline-dark" href="/about">About Our Data</a>
       <button
         class="navbar-toggler navbar-toggler-right"
         type="button"
@@ -24,30 +20,22 @@
       <b-collapse id="navbarResponsive" class="collapse navbar-collapse" is-nav>
         <b-navbar-nav class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#page-top">Start</a>
+            <a class="nav-link js-scroll-trigger" :href="start">Start</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#temporal-section"
-              >Timeline</a
-            >
+            <a class="nav-link js-scroll-trigger" :href="timeline">Timeline</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#spatial-section"
-              >Map</a
-            >
+            <a class="nav-link js-scroll-trigger" :href="map">Map</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#concept-section"
-              >Concepts</a
-            >
+            <a class="nav-link js-scroll-trigger" :href="concepts">Concepts</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#keyword-section"
-              >Keyword</a
-            >
+            <a class="nav-link js-scroll-trigger" :href="keyword">Keyword</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#why-section">Why</a>
+            <a class="nav-link js-scroll-trigger" :href="why">Why</a>
           </li>
           <li v-if="!status.loggedIn" class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#" @click="action = 'Login'" v-b-modal.handleUserActions>Login</a>
@@ -57,9 +45,7 @@
           </li>
           <b-nav-item-dropdown v-if="status.loggedIn" text="Manage" right>
             <b-dropdown-item to="/manage-profile">Profile</b-dropdown-item>
-            <b-dropdown-item :to="{ name: 'authenticated' }"
-              >Admin</b-dropdown-item
-            >
+            <b-dropdown-item :to="{ name: 'authenticated' }">Admin</b-dropdown-item>
             <b-dropdown-item @click="handleLogout()">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -98,14 +84,32 @@ export default {
       required: true
     },
   },
-  computed: {
-    ...mapState('account', ['user', 'role', 'status']),
-  },
   data() {
     return {
       submitted: false,
       action: '',
     }
+  },
+  computed: {
+    ...mapState('account', ['user', 'role', 'status']),
+    start() {
+      return this.$route.path === '/manage-profile' ? '/#page-top' : '#page-top'
+    },
+    timeline() {
+      return this.$route.path === '/manage-profile' ? '/#temporal-section' : '#temporal-section'
+    },
+    map() {
+      return this.$route.path === '/manage-profile' ? '/#spatial-section' : '#spatial-section'
+    },
+    concepts() {
+      return this.$route.path === '/manage-profile' ? '/#concept-section' : '#concept-section'
+    },
+    keyword() {
+      return this.$route.path === '/manage-profile' ? '/#keyword-section' : '#keyword-section'
+    },
+    why() {
+      return this.$route.path === '/manage-profile' ? '/#why-section' : '#why-section'
+    },
   },
   watch: {
     triggerLogin(val) {
