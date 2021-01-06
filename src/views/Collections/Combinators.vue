@@ -19,15 +19,15 @@
             </div>
           </template>
           <template v-slot:cell(actions)="row" class="actions">
-            <fa-icon
-              v-if="row.item.review"
-              icon="exclamation-circle"
-              class="fa-2x text-danger sr-icons"
-              title="Review Needed"
-            />
             <b-button-group size="sm">
               <b-button :to="{name: 'Update Combinator', params: {id: row.item.id} }" variant="primary" v-text="'Edit'"></b-button>
               <b-button variant="primary" v-text="'Delete'" @click="itemToDelete = row.item" v-b-modal.deleteConfirmation></b-button>
+              <fa-icon
+                v-if="row.item.review"
+                icon="exclamation-circle"
+                class="fa-2x text-danger sr-icons"
+                title="Review Needed"
+              />
             </b-button-group>
           </template>
         </b-table>

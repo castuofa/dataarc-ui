@@ -36,6 +36,7 @@ const apollo = {
           citation
           url
           operator
+          review
           dataset {
             id
             title
