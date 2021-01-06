@@ -44,7 +44,7 @@
             type="submit"
             class="btn btn-dark btn-lg btn-block"
           >
-            Sign In
+            Login
           </button>
         </b-col>
       </b-row>

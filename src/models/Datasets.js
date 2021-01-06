@@ -37,7 +37,7 @@ class Datasets {
 
   _create = async () => {
     try {
-      const resp = await axios.post(this.createUrl, this);
+      const resp = await axios.post(this.createUrl, this.formData);
       return resp;
     } catch (err) {
       console.log(err);

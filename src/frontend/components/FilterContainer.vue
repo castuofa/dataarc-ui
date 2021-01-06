@@ -182,7 +182,7 @@
         <b-button size="sm" variant="dark" @click="cancel()">
           Cancel
         </b-button>
-        <b-button size="sm" variant="dark" @click="$emit('sign-in');close()">
+        <b-button size="sm" variant="dark" @click="$emit('login');close()">
           Login
         </b-button>
       </template>

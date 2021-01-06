@@ -50,17 +50,17 @@
             <a class="nav-link js-scroll-trigger" href="#why-section">Why</a>
           </li>
           <li v-if="!status.loggedIn" class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#" @click="action = 'Sign In'" v-b-modal.handleUserActions>Login</a>
+            <a class="nav-link js-scroll-trigger" href="#" @click="action = 'Login'" v-b-modal.handleUserActions>Login</a>
           </li>
           <li v-if="!status.loggedIn" class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#" @click="action = 'Register'" v-b-modal.handleUserActions>Signup</a>
+            <a class="nav-link js-scroll-trigger" href="#" @click="action = 'Register'" v-b-modal.handleUserActions>Register</a>
           </li>
           <b-nav-item-dropdown v-if="status.loggedIn" text="Manage" right>
             <b-dropdown-item to="/manage-profile">Profile</b-dropdown-item>
             <b-dropdown-item :to="{ name: 'authenticated' }"
               >Admin</b-dropdown-item
             >
-            <b-dropdown-item @click="handleLogout()">Signout</b-dropdown-item>
+            <b-dropdown-item @click="handleLogout()">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -70,7 +70,7 @@
         <h3>{{action}}</h3>
       </template>
       <p class="my-2">
-        <login @link-clicked="setAction" @close-modal="action = ''; $bvModal.hide('handleUserActions')" v-if="action === 'Sign In'" />
+        <login @link-clicked="setAction" @close-modal="action = ''; $bvModal.hide('handleUserActions')" v-if="action === 'Login'" />
         <register @link-clicked="setAction" @close-modal="action = ''; $bvModal.hide('handleUserActions')" v-if="action === 'Register'" />
         <forgot-password v-if="action === 'Forgot Password'" @close-modal="action = ''; $bvModal.hide('handleUserActions')"/>
         <notice @link-clicked="setAction" v-if="action === 'Notice'" />
@@ -110,13 +110,13 @@ export default {
   watch: {
     triggerLogin(val) {
       if (val) {
-        this.action = 'Sign In'
+        this.action = 'Login'
         this.$bvModal.show('handleUserActions')
       }
     }
   },
   methods: {
-    ...mapActions('account', ['login','logout']),
+    ...mapActions('account', ['login', 'logout']),
     handleLogout() {
       this.logout().then(() => {
         if (this.$route.path !== '/') {

@@ -26,7 +26,7 @@
         </b-row>
       </p>
       <div class="text-center">
-        <b-button variant="primary" @click="$emit('link-clicked', 'Sign In')">Continue to Login</b-button>
+        <b-button variant="primary" @click="$emit('link-clicked', 'Login')">Continue to Login</b-button>
       </div>
     </b-jumbotron>
   </div>

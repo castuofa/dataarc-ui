@@ -20,13 +20,13 @@
       :filters="compiledFilters"
       :triggers="filterCount"
       :sample-range="sampleRange"
-      @load-video="setFileName"
+      @load-video="setPath"
     />
     <map-section
       id="spatial-section"
       v-model="spatialFilter"
       :filters="compiledFilters"
-      @load-video="setFileName"
+      @load-video="setPath"
       @removed="removeFilter"
     />
     <concept-section
@@ -36,7 +36,7 @@
       :sample-concept="sampleConcept"
       @filtered="processFilter"
       @removed="removeFilter"
-      @load-video="setFileName"
+      @load-video="setPath"
     />
     <keyword-section
       id="keyword-section"
@@ -50,20 +50,20 @@
       :concept-filters="conceptFilters"
       @removed="removeFilter"
       @filters-loaded="loadFilters"
-      @sign-in="$emit('sign-in')"
+      @login="$emit('login')"
     />
     <result-section
       id="result-section"
       :filters="compiledFilters"
       @resultsCount="setCount"
       @resultsUpdated="setResults"
-      @load-video="setFileName"
+      @load-video="setPath"
     />
     <why-section
       id="why-section"
       :filters="filters"
     />
-    <video-modal v-if="fileName" :fileName="fileName" @video-closed="resetFileName"/>
+    <video-modal v-if="path" :path="path" @video-closed="resetPath"/>
   </div>
 </template>
 
@@ -137,7 +137,7 @@ export default {
       },
       sampleConcept: '',
       sampleRange: null,
-      fileName: null,
+      path: null,
     }
   },
   computed: {
@@ -298,11 +298,11 @@ export default {
     setResults(val, type) {
       this.$set(this.results, type, val)
     },
-    setFileName(val) {
-      this.fileName = val
+    setPath(val) {
+      this.path = this.$demoVids[val]
     },
-    resetFileName(val) {
-      this.fileName = null
+    resetPath(val) {
+      this.path = null
     },
   },
 }
