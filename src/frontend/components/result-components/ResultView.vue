@@ -197,11 +197,11 @@
                   </b-row>
                   <b-row v-if="currentDataset.url">
                     <strong>Url: </strong>
-                    <a :href="currentDataset.url">{{ currentDataset.url }}</a>
+                    <a target="_blank" :href="currentDataset.url">{{ currentDataset.url }}</a>
                   </b-row>
                   <br>
                   <b-row v-if="currentDataset.metadata">
-                    <b-button :href="$sourceUrls.metadata+currentDataset.metadata">View Metadata</b-button>
+                    <b-button target="_blank" :href="currentDataset.metadata">View Metadata</b-button>
                   </b-row>
                 </b-container>
               </b-col>
