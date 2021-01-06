@@ -7,7 +7,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto text-center">
-            <h2 class="section-heading">
+            <h2>
               Why
               <sup><a
                 :href="$helpUrls.why"
