@@ -438,6 +438,8 @@ const apollo = {
             description
             citation
             url
+            review
+            missing
           }
           combinators {
             id
@@ -853,6 +855,14 @@ const methods = {
         } else {
           this.$router.push(dataModel.routeUrl);
         }
+      });
+    }
+    else if (type === 'DatasetFields') {
+      this.$bvModal.hide('deleteDatasetFieldConfirmation');
+      const dataModel = new Models[type](item);
+      dataModel._delete().then(value => {
+        this.makeToast('success');
+        this.$apollo.queries.dataset.refetch()
       });
     }
   },
