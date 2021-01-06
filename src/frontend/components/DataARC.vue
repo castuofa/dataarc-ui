@@ -50,7 +50,7 @@
       :concept-filters="conceptFilters"
       @removed="removeFilter"
       @filters-loaded="loadFilters"
-      @sign-in="$emit('sign-in')"
+      @login="$emit('login')"
     />
     <result-section
       id="result-section"
