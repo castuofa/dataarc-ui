@@ -18,6 +18,17 @@ class DatasetFields {
       console.log(err);
     }
   };
+
+  _delete = async () => {
+    try {
+      const resp = await axios.delete(
+        `${process.env.VUE_APP_API_URL}/dataset-fields/${this.id}`
+      );
+      return 'dataset-fields';
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
 
 export default DatasetFields;
