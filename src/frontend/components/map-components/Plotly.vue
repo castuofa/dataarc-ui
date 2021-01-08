@@ -46,7 +46,11 @@ export default {
       outline: {
         lon: [],
         lat: [],
-      }
+      },
+      iceland: {},
+      selection: [],
+      ids: [],
+      colors: [],
     }
   },
   watch: {
@@ -60,7 +64,7 @@ export default {
   },
   mounted() {
     this.collectColorBins()
-    this.loadMap()
+    this.getJSON()
   },
   methods: {
     collectColorBins() {
@@ -104,6 +108,47 @@ export default {
       })
 
       Plotly.restyle(this.plotlyInstance, 'marker.color', [this.colorBins], [0])
+    },
+    getJSON() {
+      let options = {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      }
+      fetch('https://raw.githubusercontent.com/castuofa/dataarc-source/main/map-layers/iceland.geojson', options)
+      .then((response) => {
+        return response.json()
+      },
+      )
+      .then((json) => {
+        this.iceland = json
+        for (const feature in this.iceland.features) {
+          this.ids.push(feature)
+          this.colors.push(0)
+          this.iceland.features[feature].id = feature
+        }
+        this.loadMap()
+      })
+    },
+    isPointInPolygon(latitude, longitude, polygons) {
+      const x = latitude; const y = longitude
+
+      for (let a = 0; a < polygons.length; a++) {
+        let inside = false
+        for (let i = 0, j = polygons[a].length - 1; i < polygons[a].length; j = i++) {
+          const xi = polygons[a][i][0]; const yi = polygons[a][i][1]
+          const xj = polygons[a][j][0]; const yj = polygons[a][j][1]
+
+          const intersect = ((yi > y) !== (yj > y)) &&
+                  (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
+          if (intersect) {
+            inside = !inside
+            this.selection = polygons[a]
+          }
+        }
+        return inside
+      }
     },
     loadMap() {
       const vm = this
@@ -150,6 +195,32 @@ export default {
             showlegend: false,
             hoverinfo: 'none'
           },
+          {
+            type: 'choroplethmapbox',
+            geojson: this.iceland,
+            locations: this.ids,
+            z: this.colors,
+            marker: {
+              line: {
+                width: 2,
+                color: 'rgba(116, 73, 17, 1)',
+              },
+              opacity: 0.2,
+            },
+            selected: {
+              marker: {
+                opacity: 0.2,
+              },
+            },
+            unselected: {
+              marker: {
+                opacity: 0.2,
+              },
+            },
+            showscale: false,
+            showlegend: false,
+            hoverinfo: 'skip',
+          },
         ]
 
         const layout = {
@@ -170,9 +241,21 @@ export default {
             padding: 2,
             bordercolor: 'white',
           },
+          showlegend: false,
         }
 
+        let modeBarButtons = [[
+          'pan2d',
+          'select2d',
+          'lasso2d',
+          'zoomIn2d',
+          'zoomOut2d',
+          'resetViews',
+          'toImage',
+        ]]
+
         const config = {
+          modeBarButtons: modeBarButtons,
           responsive: true,
           displaylogo: false,
           displayModeBar: true,
@@ -185,15 +268,37 @@ export default {
             vm.plotlyData[value] = [index, data[0].color[index]]
           })
 
+          gd.addEventListener('mouseup', (evt) => {
+            let xaxis = gd._fullLayout.mapbox._subplot.xaxis;
+            let yaxis = gd._fullLayout.mapbox._subplot.yaxis;
+            let l = gd._fullLayout.margin.l;
+            let t = gd._fullLayout.margin.t;
+
+            let xInDataCoord = xaxis.p2c(evt.x - l);
+            let yInDataCoord = yaxis.p2c(evt.y - t);
+
+            for (let i = 0; i < this.iceland.features.length; i++) {
+              if (this.isPointInPolygon(xInDataCoord, yInDataCoord, this.iceland.features[i].geometry.coordinates)) {
+                this.outline = {lat:[], lon:[]}
+                const firstPoint = this.selection[0]
+                for (const point in this.selection) {
+                  this.outline.lon.push(this.selection[point][0])
+                  this.outline.lat.push(this.selection[point][1])
+                }
+                this.outline.lon.push(firstPoint[0])
+                this.outline.lat.push(firstPoint[1])
+                this.setFilterOutline()
+                this.$emit('filtered', this.selection)
+              }
+            }
+          })
+
+
+
           gd.on('plotly_selected', (eventData) => {
             if (eventData) {
+              this.selection = []
               vm.addSelectionToFilter(eventData)
-
-              // eventData.points.forEach((pt) => {
-              //   vm.colorBins[pt.pointNumber] = data[0].color[pt.pointNumber]
-              // })
-
-              // Plotly.restyle(gd, 'marker.color', [vm.colorBins], [0])
             }
           })
           gd.on('plotly_deselect', (eventData) => {
