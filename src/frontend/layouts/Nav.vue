@@ -5,7 +5,7 @@
   >
     <div class="container">
       <b-navbar-brand class="navbar-brand js-scroll-trigger" href="/">DataARC</b-navbar-brand>
-      <a class="navbar-about btn btn-sm btn-outline-dark" href="/about">About Our Data</a>
+      <a target="_blank" class="navbar-about btn btn-sm btn-outline-dark" href="https://www.data-arc.org/about/the-datasets/">About Our Data</a>
       <button
         class="navbar-toggler navbar-toggler-right"
         type="button"

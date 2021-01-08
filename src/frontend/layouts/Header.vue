@@ -44,7 +44,7 @@
                   @click="$emit('apply-sample-filter', 'temporal')"
                   >Run Example</a
                 >
-                <p>This example uses our timeline to filter the result data.</p>
+                <p>See the results produced using a temporal filter (1,000 - 2,000 CE).</p>
               </div>
             </div>
             <div class="col-lg-4 col-md-6 text-center">
@@ -59,7 +59,7 @@
                   @click="$emit('apply-sample-filter', 'polygon')"
                   >Run Example</a
                 >
-                <p>Want to see results only with a specific bounding box?</p>
+                <p>See the results from drawing a spatial bounding box around Iceland.</p>
               </div>
             </div>
             <div class="col-lg-4 col-md-6 text-center">
@@ -75,11 +75,7 @@
                   >Run Example</a
                 >
                 <p>
-                  Looking for a way to view results that only relate to specific
-                  concepts? Filter results based on the concept map. Learn about
-                  <a href="//www.data-arc.org/conceptmapping/"
-                    >dataARC&apos;s concept map</a
-                  >.
+                  See the results from filtering based on the concept of "humans."
                 </p>
               </div>
             </div>
