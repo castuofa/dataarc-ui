@@ -9,8 +9,8 @@ import {
   ConceptMaps,
   ConceptTopics,
   Concepts
-} from '../models';
-import TableViewLayout from '../views/Collections/templates/TableViewLayout.vue';
+} from '@/backend/components/';
+import TableViewLayout from '@/backend/templates/TableViewLayout.vue';
 
 const Models = {
   Combinators,
@@ -788,6 +788,7 @@ const methods = {
         if (val.type === 'Combinators') {
           this.$router.push(dataModel.routeUrl);
         } else {
+          this.makeToast('success');
           this.$router.go(-1);
         }
       });

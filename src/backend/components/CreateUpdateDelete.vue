@@ -141,7 +141,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import collectionMixin from '../../mixins/collectionMixin'
+import collectionMixin from '@/mixins/collectionMixin'
 
 export default {
   mixins: [collectionMixin],

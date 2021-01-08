@@ -120,7 +120,7 @@
 
 <script>
 import gql from 'graphql-tag';
-import collectionMixin from '../../mixins/collectionMixin';
+import collectionMixin from '@/mixins/collectionMixin';
 export default {
   data() {
     return {

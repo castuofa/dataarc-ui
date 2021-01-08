@@ -281,7 +281,7 @@
 
 <script>
 import gql from 'graphql-tag';
-import collectionMixin from '../../mixins/collectionMixin';
+import collectionMixin from '@/mixins/collectionMixin';
 export default {
   data() {
     return {
@@ -419,7 +419,6 @@ export default {
   methods: {
     update(val) {
       this.setFormData(val);
-      this.makeToast('success');
     },
     updateField(val) {
       const temp = [];

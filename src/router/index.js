@@ -1,10 +1,10 @@
 import Cookies from 'js-cookie'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import NotFound from '@/components/NotFound.vue'
-import defaultLayout from '@/layouts/Default.vue'
+import NotFound from '@/backend/components/NotFound.vue'
+import defaultLayout from '@/backend/layouts/Default.vue'
 import frontendLayout from '@/frontend/layouts/Layout.vue'
-import dashboardLayout from '@/layouts/Dashboard.vue'
+import dashboardLayout from '@/backend/layouts/Dashboard.vue'
 import axios from 'axios'
 import roles from './roles'
 Vue.use(VueRouter)
@@ -49,27 +49,27 @@ const routes = [
       {
         path: 'register',
         name: 'register',
-        component: () => import('@/views/Pages/Register.vue'),
+        component: () => import('@/backend/views/Pages/Register.vue'),
       },
       {
         path: 'forgot-password',
         name: 'forgot-password',
-        component: () => import('@/views/Pages/ForgotPassword.vue'),
+        component: () => import('@/backend/views/Pages/ForgotPassword.vue'),
       },
       {
         path: 'reset-password',
         name: 'reset-password',
-        component: () => import('@/views/Pages/ResetPassword.vue'),
+        component: () => import('@/backend/views/Pages/ResetPassword.vue'),
       },
       {
         path: 'unauthorized',
         name: 'Unauthorized',
-        component: () => import('@/views/Pages/Error401.vue'),
+        component: () => import('@/backend/views/Pages/Error401.vue'),
       },
       {
         path: 'notice',
         name: 'Notice',
-        component: () => import('@/views/Pages/Notice.vue'),
+        component: () => import('@/backend/views/Pages/Notice.vue'),
       },
     ],
     meta: {
@@ -91,7 +91,7 @@ const routes = [
       {
         path: 'profile',
         name: 'Profile',
-        component: () => import('@/views/Pages/Profile.vue'),
+        component: () => import('@/backend/views/Pages/Profile.vue'),
       },
     ],
     meta: {
@@ -108,13 +108,13 @@ const routes = [
       {
         path: 'datasets',
         name: 'Datasets',
-        component: () => import('@/views/Collections/Datasets.vue'),
+        component: () => import('@/backend/components/datasets/Datasets.vue'),
         props: true,
         children: [
           {
             path: 'create',
             name: 'Create Dataset',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
         ],
@@ -122,7 +122,7 @@ const routes = [
       {
         path: 'combinators',
         name: 'Combinators',
-        component: () => import('@/views/Collections/Combinators.vue'),
+        component: () => import('@/backend/components/combinators/Combinators.vue'),
         props: true,
         meta: {
           title: 'Combinators',
@@ -131,13 +131,13 @@ const routes = [
           {
             path: 'create',
             name: 'Create Combinator',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
           {
             path: 'update/:id',
             name: 'Update Combinator',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
         ],
@@ -145,13 +145,13 @@ const routes = [
       {
         path: 'dataset/:id',
         name: 'Dataset View',
-        component: () => import('@/views/Collections/DatasetView.vue'),
+        component: () => import('@/backend/components/datasets/DatasetView.vue'),
         props: true,
         children: [
           {
             path: 'template',
             name: 'Update Templates',
-            component: () => import('@/views/Collections/DatasetTemplates.vue'),
+            component: () => import('@/backend/components/datasets/DatasetTemplates.vue'),
             props: true,
           },
         ],
@@ -171,32 +171,32 @@ const routes = [
       {
         path: 'users',
         name: 'Users',
-        component: () => import('@/views/Collections/Container.vue'),
+        component: () => import('@/backend/components/Container.vue'),
         redirect: 'users/index',
         children: [
           {
             path: 'index',
             name: 'View Users',
-            component: () => import('@/views/Collections/Users-index.vue'),
+            component: () => import('@/backend/components/users/Users-index.vue'),
           },
         ],
       },
       {
         path: 'categories',
         name: 'Categories',
-        component: () => import('@/views/Collections/Categories.vue'),
+        component: () => import('@/backend/components/categories/Categories.vue'),
         props: true,
         children: [
           {
             path: 'create',
             name: 'Create Category',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
           {
             path: 'update/:id',
             name: 'Update Category',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
         ],
@@ -204,19 +204,19 @@ const routes = [
       {
         path: 'temporal-coverages',
         name: 'TemporalCoverages',
-        component: () => import('@/views/Collections/TemporalCoverages.vue'),
+        component: () => import('@/backend/components/temporal-coverages/TemporalCoverages.vue'),
         props: true,
         children: [
           {
             path: 'create',
             name: 'Create TemporalCoverage',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
           {
             path: 'update/:id',
             name: 'Update TemporalCoverage',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
         ],
@@ -224,13 +224,13 @@ const routes = [
       {
         path: 'concept-maps',
         name: 'ConceptMaps',
-        component: () => import('@/views/Collections/ConceptMaps.vue'),
+        component: () => import('@/backend/components/concept-maps/ConceptMaps.vue'),
         props: true,
         children: [
           {
             path: 'create',
             name: 'Create ConceptMap',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
         ],
@@ -238,32 +238,32 @@ const routes = [
       {
         path: 'concepts',
         name: 'Concepts',
-        component: () => import('@/views/Collections/Concepts.vue'),
+        component: () => import('@/backend/components/concepts/Concepts.vue'),
         props: true,
         children: [
           {
             path: 'create',
             name: 'Create Concept',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
           {
             path: 'update/:id',
             name: 'Update Concept',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
         ],
       },
       {
         path: 'concept-map/:id',
-        component: () => import('@/views/Collections/ConceptMapsView.vue'),
+        component: () => import('@/backend/components/concept-maps/ConceptMapsView.vue'),
         props: true,
         children: [
           {
             path: '',
             name: 'Update ConceptMap',
-            component: () => import('@/views/Collections/CreateUpdateDelete.vue'),
+            component: () => import('@/backend/components/CreateUpdateDelete.vue'),
             props: true,
           },
         ],

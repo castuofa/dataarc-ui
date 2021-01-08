@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import collectionMixin from '../../mixins/collectionMixin'
+import collectionMixin from '@/mixins/collectionMixin'
 import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
 export default {
   components: {
