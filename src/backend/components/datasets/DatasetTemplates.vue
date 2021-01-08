@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import collectionMixin from '../../mixins/collectionMixin';
+import collectionMixin from '@/mixins/collectionMixin';
 
 export default {
   data() {

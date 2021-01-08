@@ -67,10 +67,10 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import Login from '../../views/Login.vue'
-import Register from '../../views/Pages/Register.vue'
-import ForgotPassword from '../../views/Pages/ForgotPassword.vue'
-import Notice from '../../views/Pages/Notice.vue'
+import Login from '@/backend/views/Login.vue'
+import Register from '@/backend/views/Pages/Register.vue'
+import ForgotPassword from '@/backend/views/Pages/ForgotPassword.vue'
+import Notice from '@/backend/views/Pages/Notice.vue'
 export default {
   components: {
     Login,

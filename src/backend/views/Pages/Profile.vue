@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import UserInfo from '../../frontend/components/profile-components/UserInfo.vue'
+import UserInfo from '@/frontend/components/profile-components/UserInfo.vue'
 
 export default {
   components: {
