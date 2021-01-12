@@ -29,8 +29,8 @@
                 </ul>
               </template>
               <template v-slot:cell(actions)="row" class="actions">
-                <b-button variant="primary" v-text="'Request Download'" @click="requestDownload(row.item)" :disabled="row.item.process || (row.item.path !== '' && row.item.path !== null)"></b-button>
-                <b-button variant="primary" target="_blank" v-text="'Download'" :disabled="!row.item.path" :href="link(row.item.path)"></b-button>
+                <b-button variant="primary" v-text="'Request Download'" @click="requestDownload(row.item)" :disabled="row.item.process"></b-button>
+                <b-button variant="primary" target="_blank" v-text="'Download'" :disabled="!row.item.path || row.item.process" :href="link(row.item.path)"></b-button>
               </template>
             </b-table>
           </b-card>
