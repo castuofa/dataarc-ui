@@ -41,7 +41,7 @@
           class="panel panel-default"
         >
           <div class="panel-heading">
-            Query Results: {{ filteredFeatures.matched_count ? filteredFeatures.matched_count : 0 }} out of {{ filteredFeatures.total_count ? filteredFeatures.total_count : currentDataset.features_count }} records
+            Query Results: {{ filteredFeatures.matched_count ? filteredFeatures.matched_count : 0 }} out of {{ currentDataset.features_count }} records
             <br>
             <span v-if="filters && filteredFeatures.matched_count">
               Filtered features: {{ rows }} out of {{ filteredFeatures.matched_count }} results
@@ -155,15 +155,7 @@ export default {
       model: {
         type: '',
         action: '',
-        title: '',
-        description: '',
-        metadata: '',
-        citation: '',
-        url: '',
-        image: null,
-        source: null,
         user: {},
-        category: '',
         username: '',
         email: '',
         password: '',
@@ -552,6 +544,7 @@ export default {
             field.values = val.fields
           }
         })
+        this.$apollo.queries.allConcepts.skip = false
       }
     },
     currentCombinator(val) {
@@ -586,12 +579,13 @@ export default {
 
       this.collectionType = (variables[1] !== 'Category' ? `${variables[1]}s` : 'Categories')
       if (this.$route.name === 'Create Combinator' || this.$route.name === 'Update Combinator') {
-        this.$apollo.queries.allDatasets.skip = false
-        this.$apollo.queries.allConcepts.skip = false
         if (this.$route.params.id) {
           this.currentId = this.$route.params.id
           this.$apollo.queries.combinator.skip = false
           this.$apollo.queries.combinator.refetch()
+        }
+        else {
+          this.$apollo.queries.allDatasets.skip = false
         }
       }
       else if (this.$route.name === 'Update ConceptMap') {

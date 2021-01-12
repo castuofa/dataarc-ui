@@ -37,8 +37,8 @@ const actions = {
 
     userService.register(user)
     .then(
-      (user) => {
-        commit('registerSuccess', user)
+      (response) => {
+        commit('registerSuccess', response)
         setTimeout(() => {
           // display success message after route change completes
           dispatch('alert/success', 'Registration successful', { root: true })
@@ -55,8 +55,8 @@ const actions = {
 
     userService.update(user, id)
     .then(
-      (user) => {
-        commit('updateSuccess', user)
+      (response) => {
+        commit('updateSuccess', response)
         setTimeout(() => {
           // display success message after route change completes
           dispatch('alert/success', 'Update successful', { root: true })
@@ -73,11 +73,11 @@ const actions = {
 
     userService.forgotPassword(email)
     .then(
-      (email) => {
-        commit('forgotPasswordSuccess', email)
+      (response) => {
+        commit('forgotPasswordSuccess', response)
         setTimeout(() => {
           // display success message after route change completes
-          dispatch('alert/success', 'Password reset successful', { root: true })
+          dispatch('alert/success', 'Email has been sent.', { root: true })
         })
       },
       (error) => {
@@ -174,7 +174,7 @@ const mutations = {
     state.email = email
   },
   forgotPasswordSuccess(state, response) {
-    state.user = response.user
+    state.status = { loggedIn: false, success: 'Email has been sent.' }
   },
   forgotPasswordFailure(state, err) {
     if (err.message === 'Request failed with status code 400') {
@@ -189,7 +189,7 @@ const mutations = {
     state.code = code
   },
   resetPasswordSuccess(state, response) {
-    state.user = response.user
+    state.status = {success: 'Password Reset Successful.'}
   },
   resetPasswordFailure(state, err) {
     state.status = { loggedIn: false, error: err }

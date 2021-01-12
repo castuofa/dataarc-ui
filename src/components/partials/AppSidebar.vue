@@ -18,7 +18,7 @@
                   <b-dropdown-item
                     @click="handleLogout()"
                   >
-                    Signout
+                    Logout
                   </b-dropdown-item>
                 </b-dropdown>
               </p>

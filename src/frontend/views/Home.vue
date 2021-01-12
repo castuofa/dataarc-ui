@@ -1,7 +1,7 @@
 <template>
   <div>
     <manage-profile @load-saved-search="handleSearch" v-if="$route.path === '/manage-profile'"/>
-    <data-arc v-else :saved-search="savedSearch" :sampleFilter="sampleFilter" @sign-in="$emit('sign-in')"/>
+    <data-arc v-else :saved-search="savedSearch" :sampleFilter="sampleFilter" @login="$emit('login')"/>
   </div>
 </template>
 

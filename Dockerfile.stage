@@ -1,10 +1,13 @@
 # prep
 FROM node:lts-alpine as prep
 WORKDIR /app
-COPY package*.json ./
+COPY package.json ./
+COPY yarn.lock ./
 RUN yarn install
+COPY .env.stage .env
 COPY . .
-RUN yarn stage
+RUN rm .env.production
+RUN yarn build
 
 # production
 FROM nginx:stable-alpine as production

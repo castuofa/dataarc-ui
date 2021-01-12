@@ -72,8 +72,8 @@ function forgotPassword(email) {
     })
     .then((response) => {
       // Handle success.
-      console.log('Your user received an email');
-      console.log(response);
+      const status = response.data
+      return status
     });
 }
 function resetPassword(code, password, passwordConfirmation) {
@@ -85,8 +85,6 @@ function resetPassword(code, password, passwordConfirmation) {
     })
     .then((response) => {
       // Handle success.
-      console.log('Your password has been reset.');
-      console.log(response);
       return response
     });
 }

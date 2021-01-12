@@ -7,15 +7,24 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-8 mx-auto text-center">
-            <h2 class="section-heading">
+            <h2>
               Why
+              <sup><a
+                :href="$helpUrls.why"
+                title="Read instructions on how to use the tool"
+                class="text-dark"
+                target="_blank"
+                data-toggle="tooltip"><b-icon-file-earmark-text /></a></sup>
             </h2>
             <hr class="primary">
             <p>
-              Why did you get these results? We will explain how the results were obtained in order to provide a level
-              of confidence for how the data was processed to produce what you are seeing.
+              Explore the connections between the concepts, combinators and datasets <br>
+              used to produce your search results.
             </p>
           </div>
+        </div>
+        <div class="row">
+          <DartQueryExplainer :filter="filters"/>
         </div>
       </div>
     </div>
@@ -23,8 +32,19 @@
 </template>
 
 <script>
+import DartQueryExplainer from './why-components/DartQueryExplainer.vue';
+
 export default {
   name: 'WhyContainer',
+  components: {
+    DartQueryExplainer
+  },
+   props: {
+    filters: {
+      type: Object,
+      required: true
+    }
+  },
 }
 </script>
 

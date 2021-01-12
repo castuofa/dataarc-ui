@@ -6,7 +6,7 @@
           <h2>
             Filters
             <sup><a
-              href="https://dataarc-demo.readthedocs.io/en/latest/#getting-started"
+              :href="$helpUrls.filter"
               title="Read instructions on how to use the tool"
               class="text-dark"
               target="_blank"
@@ -182,7 +182,7 @@
         <b-button size="sm" variant="dark" @click="cancel()">
           Cancel
         </b-button>
-        <b-button size="sm" variant="dark" @click="$emit('sign-in');close()">
+        <b-button size="sm" variant="dark" @click="$emit('login');close()">
           Login
         </b-button>
       </template>

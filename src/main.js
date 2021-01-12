@@ -37,6 +37,7 @@ import router from '@/router';
 import store from '@/store';
 
 import Multiselect from 'vue-multiselect';
+import outsideLinks from './outsideLinks';
 
 // Plugins
 import VueFormGenerator from 'vue-form-generator';
@@ -102,9 +103,13 @@ const apolloProvider = new VueApollo({
 
 // base url for mongodb
 Vue.prototype.$apiUrl = process.env.VUE_APP_API_URL;
+Vue.prototype.$baseUrl = process.env.VUE_APP_BASE_URL;
 Vue.config.productionTip = false;
 Vue.prototype.$log = console.log;
 Vue.prototype.$DEBUG = process.env;
+Vue.prototype.$helpUrls = outsideLinks.help
+Vue.prototype.$demoVids = outsideLinks.demoVids
+Vue.prototype.$sourceUrls = outsideLinks.source
 
 const app = new Vue({
   router,

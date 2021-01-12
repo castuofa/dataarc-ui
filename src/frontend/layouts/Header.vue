@@ -22,9 +22,7 @@
             visualization graphs to view the changes that reflect the newly selected data.
           </p>
           <h6>
-            <a href="/help" class="btn btn-sm btn-outline-light"
-              >Not sure where to start?</a
-            >
+            <a target="_blank" :href="`${$helpUrls.baseUrl}master/`" class="btn btn-sm btn-outline-light">Not sure where to start?</a>
           </h6>
           <br /><br /><br />
           <div class="row">

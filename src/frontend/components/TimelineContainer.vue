@@ -16,7 +16,7 @@
               data-toggle="tooltip"
             ><b-icon-info-circle-fill /></a></sup>
             <sup><a
-              href="https://dataarc-demo.readthedocs.io/en/latest/#getting-started"
+              :href="$helpUrls.temporal"
               title="Read instructions on how to use the tool"
               class="text-dark"
               target="_blank"
@@ -25,7 +25,7 @@
             <sup><b-button
               size="sm"
               variant="transparent"
-              @click="$emit('load-video', 'Results_111320.mp4')"
+              @click="$emit('load-video', 'temporal')"
               title="Watch a quick demo of the tool"
               class="text-dark p-0 pb-1"
               data-toggle="tooltip"

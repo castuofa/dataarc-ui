@@ -1,7 +1,7 @@
 <template>
   <div id="page-top">
     <layout-header @apply-sample-filter="applyFilter" :triggerLogin="triggerLogin"/>
-    <router-view :sampleFilter="runSampleFilter" @sign-in="triggerLogin = true"/>
+    <router-view :sampleFilter="runSampleFilter" @login="triggerLogin = true"/>
     <layout-footer />
   </div>
 </template>

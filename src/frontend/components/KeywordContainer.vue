@@ -6,7 +6,7 @@
           <h2>
             Keyword
             <sup><a
-              href="https://dataarc-demo.readthedocs.io/en/latest/#getting-started"
+              :href="$helpUrls.keyword"
               title="Read instructions on how to use the tool"
               class="text-dark"
               target="_blank"
