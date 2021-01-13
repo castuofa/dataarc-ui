@@ -23,9 +23,8 @@
 </template>
 
 <script>
-import AppHeader from '@/components/partials/AppHeader'
-import AppSidebar from '@/components/partials/AppSidebar'
-// import AppFooter from '@/components/partials/AppFooter'
+import AppHeader from '@/backend//partials/AppHeader'
+import AppSidebar from '@/backend//partials/AppSidebar'
 import { mapState, mapActions } from 'vuex'
 export default {
   name: 'Dashboard',

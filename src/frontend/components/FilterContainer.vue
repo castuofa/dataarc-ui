@@ -144,28 +144,33 @@
               @click="startFileUpload"
             >
               <b-icon-upload aria-hidden="true" /> Upload Filters
+              <input
+                type="file"
+                @change="readFile"
+                style="display:none"
+                ref="fileUpload"
+              />
             </b-button>
-            <input
-              type="file"
-              @change="readFile"
-              style="display:none"
-              ref="fileUpload"
-            />
             <a
               ref="downloadAnchor"
               :href="filterDownloadData"
               :download="downloadName"
-              style="display:none"
-            ></a>
-            <b-button
-              title="Save Search"
-              variant="success"
-              @click="saveSearchFilters"
             >
-              <b-icon-download aria-hidden="true" /> Save Search
-            </b-button>
-            <b-button title="Share Search" variant="primary">
-              <b-icon-share aria-hidden="true" /> Share Search
+              <b-button
+                title="Download Filters"
+                variant="success"
+                :disabled="filterCount === 0"
+              >
+                <b-icon-download aria-hidden="true" /> Download Filters
+              </b-button>
+            </a>
+            <b-button
+              title="Save Search to Profile"
+              variant="primary"
+              @click="saveSearchFilters"
+              :disabled="filterCount === 0"
+            >
+              <b-icon-cloud-arrow-up aria-hidden="true" /> Save Search
             </b-button>
           </b-button-group>
         </b-col>

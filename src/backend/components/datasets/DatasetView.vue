@@ -62,10 +62,7 @@
             <div style="max-width: 400px;" v-if="row.item.title">
               <b-input
                 v-model="row.item.title"
-                @blur="
-                  updateField(row.item);
-                  makeToast('success');
-                "
+                @blur="updateField(row.item)"
               ></b-input>
             </div>
           </template>
@@ -81,7 +78,6 @@
                     @click="
                       row.item.type = type;
                       updateField(row.item);
-                      makeToast('success');
                     "
                   >
                     {{ type }}
@@ -99,13 +95,28 @@
             </div>
           </template>
           <template v-slot:cell(actions)="row" class="Actions">
-            <b-button
-              variant="primary"
-              @click="currentField = row.item"
-              v-b-modal.editMetadata
-            >
-              Edit Metadata
-            </b-button>
+            <b-button-group>
+              <b-button
+                variant="primary"
+                @click="currentField = row.item"
+                v-b-modal.editMetadata
+              >
+                Edit Metadata
+              </b-button>
+              <b-button
+                v-if="row.item.missing"
+                variant="danger"
+                v-text="'Delete Missing'"
+                @click="itemToDelete = row.item"
+                v-b-modal.deleteDatasetFieldConfirmation
+              ></b-button>
+              <fa-icon
+                v-if="row.item.review"
+                icon="exclamation-circle"
+                class="fa-2x text-danger sr-icons"
+                title="Review Needed"
+              />
+            </b-button-group>
           </template>
         </b-table>
       </template>
@@ -147,10 +158,7 @@
         <b-button
           size="sm"
           variant="primary"
-          @click="
-            updateField(currentField);
-            makeToast('success');
-          "
+          @click="updateField(currentField)"
         >
           Save
         </b-button>
@@ -240,6 +248,31 @@
         </b-button>
       </template>
     </b-modal>
+    <b-modal
+      hide-backdrop
+      content-class="shadow"
+      centered
+      id="deleteDatasetFieldConfirmation"
+    >
+      <template v-slot:modal-title>
+        Delete Confirmation
+      </template>
+      <p class="my-2">
+        Are you sure you want to delete this field?
+      </p>
+      <template v-slot:modal-footer="{ ok, cancel }">
+        <b-button size="sm" @click="cancel()">
+          Cancel
+        </b-button>
+        <b-button
+          size="sm"
+          variant="danger"
+          @click="deleteItem(itemToDelete, 'DatasetFields')"
+        >
+          Delete
+        </b-button>
+      </template>
+    </b-modal>
     <b-button variant="danger" v-b-modal.deleteDatasetConfirmation
       >Delete Dataset</b-button
     >
@@ -248,7 +281,7 @@
 
 <script>
 import gql from 'graphql-tag';
-import collectionMixin from '../../mixins/collectionMixin';
+import collectionMixin from '@/mixins/collectionMixin';
 export default {
   data() {
     return {
@@ -386,7 +419,6 @@ export default {
   methods: {
     update(val) {
       this.setFormData(val);
-      this.makeToast('success');
     },
     updateField(val) {
       const temp = [];

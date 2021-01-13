@@ -9,8 +9,8 @@ import {
   ConceptMaps,
   ConceptTopics,
   Concepts
-} from '../models';
-import TableViewLayout from '../views/Collections/templates/TableViewLayout.vue';
+} from '@/backend/components/';
+import TableViewLayout from '@/backend/templates/TableViewLayout.vue';
 
 const Models = {
   Combinators,
@@ -36,6 +36,7 @@ const apollo = {
           citation
           url
           operator
+          review
           dataset {
             id
             title
@@ -437,6 +438,8 @@ const apollo = {
             description
             citation
             url
+            review
+            missing
           }
           combinators {
             id
@@ -785,6 +788,7 @@ const methods = {
         if (val.type === 'Combinators') {
           this.$router.push(dataModel.routeUrl);
         } else {
+          this.makeToast('success');
           this.$router.go(-1);
         }
       });
@@ -852,6 +856,14 @@ const methods = {
         } else {
           this.$router.push(dataModel.routeUrl);
         }
+      });
+    }
+    else if (type === 'DatasetFields') {
+      this.$bvModal.hide('deleteDatasetFieldConfirmation');
+      const dataModel = new Models[type](item);
+      dataModel._delete().then(value => {
+        this.makeToast('success');
+        this.$apollo.queries.dataset.refetch()
       });
     }
   },

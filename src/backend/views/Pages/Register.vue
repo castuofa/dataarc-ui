@@ -70,8 +70,8 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import collectionMixin from '../../mixins/collectionMixin'
-import userService from '../../api/user.service'
+import collectionMixin from '@/mixins/collectionMixin'
+import userService from '@/api/user.service'
 
 export default {
   mixins: [collectionMixin],

@@ -42,12 +42,12 @@ import outsideLinks from './outsideLinks';
 // Plugins
 import VueFormGenerator from 'vue-form-generator';
 import AsyncComputed from 'vue-async-computed';
-import Debug from '@/components/partials/Debug.vue';
+import Debug from '@/backend/partials/Debug.vue';
 import MyPlugin from './plugins/my-plugin';
-import fieldQuery from './views/Collections/templates/fieldQuery.vue';
-import fieldWrap from './views/Collections/templates/fieldWrap.vue';
-import fieldMulti from './views/Collections/templates/fieldMulti.vue';
-import fieldMultitag from './views/Collections/templates/fieldMultitag.vue';
+import fieldQuery from '@/backend/templates/fieldQuery.vue';
+import fieldWrap from '@/backend/templates/fieldWrap.vue';
+import fieldMulti from '@/backend/templates/fieldMulti.vue';
+import fieldMultitag from '@/backend/templates/fieldMultitag.vue';
 
 import VueCytoscape from 'vue-cytoscape';
 

@@ -23,14 +23,6 @@
               class="text-dark p-0 pb-1"
               data-toggle="tooltip"
             ><b-icon-play-fill font-scale="2.25" /></b-button></sup>
-            <sup><a
-              href="#"
-              title=""
-              class="text-dark"
-              target="_blank"
-              data-toggle="tooltip"
-              bg
-            ><b-icon-image /></a></sup>
           </h2>
           <hr class="bg-light">
           <p>
