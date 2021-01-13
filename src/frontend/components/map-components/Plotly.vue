@@ -131,24 +131,23 @@ export default {
         this.loadMap()
       })
     },
-    isPointInPolygon(latitude, longitude, polygons) {
+    isPointInPolygon(latitude, longitude, polygon) {
       const x = latitude; const y = longitude
+      let inside = false
+      for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        const xi = polygon[i][0]; const yi = polygon[i][1]
+        const xj = polygon[j][0]; const yj = polygon[j][1]
 
-      for (let a = 0; a < polygons.length; a++) {
-        let inside = false
-        for (let i = 0, j = polygons[a].length - 1; i < polygons[a].length; j = i++) {
-          const xi = polygons[a][i][0]; const yi = polygons[a][i][1]
-          const xj = polygons[a][j][0]; const yj = polygons[a][j][1]
+        const intersect = ((yi > y) !== (yj > y)) &&
+                (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
 
-          const intersect = ((yi > y) !== (yj > y)) &&
-                  (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
-          if (intersect) {
-            inside = !inside
-            this.selection = polygons[a]
-          }
+        if (intersect) {
+          inside = !inside
+          this.selection = polygon
         }
-        return inside
       }
+      return inside
+
     },
     loadMap() {
       const vm = this
@@ -278,7 +277,28 @@ export default {
             let yInDataCoord = yaxis.p2c(evt.y - t);
 
             for (let i = 0; i < this.iceland.features.length; i++) {
-              if (this.isPointInPolygon(xInDataCoord, yInDataCoord, this.iceland.features[i].geometry.coordinates)) {
+              let coords = this.iceland.features[i].geometry.coordinates
+              // If multiple polygons
+              if (coords.length > 1) {
+                for (let a = 0; a < coords.length; a++) {
+                  if (this.isPointInPolygon(xInDataCoord, yInDataCoord, coords[a][0])) {
+                    this.outline = {lat:[], lon:[]}
+                    const firstPoint = this.selection[0]
+                    for (const point in this.selection) {
+                      this.outline.lon.push(this.selection[point][0])
+                      this.outline.lat.push(this.selection[point][1])
+                    }
+                    this.outline.lon.push(firstPoint[0])
+                    this.outline.lat.push(firstPoint[1])
+                    this.setFilterOutline()
+                    this.$emit('filtered', this.selection)
+                    a = coords.length
+                    i = this.iceland.features.length
+                  }
+                }
+              }
+              // Single Polygon
+              else if (this.isPointInPolygon(xInDataCoord, yInDataCoord, coords[0])) {
                 this.outline = {lat:[], lon:[]}
                 const firstPoint = this.selection[0]
                 for (const point in this.selection) {
@@ -289,6 +309,7 @@ export default {
                 this.outline.lat.push(firstPoint[1])
                 this.setFilterOutline()
                 this.$emit('filtered', this.selection)
+                i = this.iceland.features.length
               }
             }
           })
