@@ -55,10 +55,18 @@ export default {
   },
   watch: {
     filteredFeatures(newValue, oldValue) {
-      if (newValue) {
+      if (this.plotlyInstance) {
+        if (newValue) {
+          this.setFilteredFeatures()
+        } else {
+          this.clearFilteredFeatures()
+        }
+      }
+
+    },
+    plotlyInstance(val) {
+      if (val && this.filteredFeatures) {
         this.setFilteredFeatures()
-      } else {
-        this.clearFilteredFeatures()
       }
     },
   },
