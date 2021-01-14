@@ -219,7 +219,21 @@ export default {
       }
     },
   },
+  mounted() {
+    if (Object.keys(this.savedSearch).length) {
+      this.loadSavedSearch()
+    }
+  },
   methods: {
+    loadSavedSearch() {
+      this.keywordFilters = []
+      this.$refs.keyword.removeFilters()
+      this.temporalFilters = []
+      this.conceptFilters = []
+      this.spatialFilter = false
+      this.filters = {}
+      this.loadFilters(this.savedSearch.filters)
+    },
     loadFilters(newFilters) {
       const keys = Object.keys(newFilters)
 
