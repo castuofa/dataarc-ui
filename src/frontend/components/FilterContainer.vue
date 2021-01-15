@@ -47,7 +47,8 @@
                 <b-list-group-item
                   class="d-flex justify-content-between align-items-center text-left bg-transparent"
                 >
-                  <small>Polygon {{ shorten(filters.polygon) }} ...</small>
+                  <span v-if="regionLabel">{{regionLabel}}</span>
+                  <span v-else><small>Polygon {{ shorten(filters.polygon) }} ...</small></span>
                   <b-button variant="dark" @click="$emit('removed', 'polygon')">
                     <b-icon-x-circle-fill
                       variant="light"
@@ -235,6 +236,10 @@ export default {
     },
     filterCount: {
       type: Number,
+      required: true
+    },
+    regionLabel: {
+      type: String,
       required: true
     },
   },

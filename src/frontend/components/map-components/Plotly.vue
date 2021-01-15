@@ -52,6 +52,7 @@ export default {
       ids: [],
       colors: [],
       text: [],
+      selectionLabel: '',
     }
   },
   watch: {
@@ -302,7 +303,8 @@ export default {
                     this.outline.lon.push(firstPoint[0])
                     this.outline.lat.push(firstPoint[1])
                     this.setFilterOutline()
-                    this.$emit('filtered', this.selection)
+                    this.selectionLabel = this.iceland.features[i].properties.name
+                    this.$emit('filtered', this.selection, this.selectionLabel)
                     a = coords.length
                     i = this.iceland.features.length
                   }
@@ -319,7 +321,8 @@ export default {
                 this.outline.lon.push(firstPoint[0])
                 this.outline.lat.push(firstPoint[1])
                 this.setFilterOutline()
-                this.$emit('filtered', this.selection)
+                this.selectionLabel = this.iceland.features[i].properties.name
+                this.$emit('filtered', this.selection, this.selectionLabel)
                 i = this.iceland.features.length
               }
             }
