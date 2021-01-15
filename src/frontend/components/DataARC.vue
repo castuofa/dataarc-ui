@@ -152,8 +152,16 @@ export default {
         this.spatialFilter ? 1 : 0,
       ].reduce((a, b) => a + b, 0)
     },
+    searchHash() {
+      return (this.$route.hash && this.$route.hash.startsWith('#searchId'))
+    },
   },
   watch: {
+    filterCount(newVal, oldVal) {
+      if (newVal === 0 && this.searchHash) {
+        this.$router.push('/')
+      }
+    },
     savedSearch(val) {
       if (val) {
         this.keywordFilters = []
@@ -219,7 +227,21 @@ export default {
       }
     },
   },
+  mounted() {
+    if (Object.keys(this.savedSearch).length) {
+      this.loadSavedSearch()
+    }
+  },
   methods: {
+    loadSavedSearch() {
+      this.keywordFilters = []
+      this.$refs.keyword.removeFilters()
+      this.temporalFilters = []
+      this.conceptFilters = []
+      this.spatialFilter = false
+      this.filters = {}
+      this.loadFilters(this.savedSearch.filters)
+    },
     loadFilters(newFilters) {
       const keys = Object.keys(newFilters)
 
