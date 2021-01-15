@@ -1,6 +1,6 @@
 // Import scss styles
 import 'vue-select/src/scss/vue-select.scss';
-import '@/scss/style.scss';
+// import '@/scss/style.scss';
 
 // Base Vue Imports
 import Vue from 'vue';
