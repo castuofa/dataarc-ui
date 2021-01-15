@@ -8,6 +8,7 @@
           :filter-count="filterCount"
           :results="results"
           :filters="compiledFilters"
+          :region-label="regionLabel"
           :concept-filters="conceptFilters"
           :keyword-filters="keywordFilters"
           @removed="removeFilter"
@@ -26,6 +27,7 @@
       id="spatial-section"
       v-model="spatialFilter"
       :filters="compiledFilters"
+      @region-label="setLabel"
       @load-video="setPath"
       @removed="removeFilter"
     />
@@ -48,6 +50,7 @@
       :filters="filters"
       :filter-count="filterCount"
       :concept-filters="conceptFilters"
+      :region-label="regionLabel"
       @removed="removeFilter"
       @filters-loaded="loadFilters"
       @login="$emit('login')"
@@ -148,6 +151,7 @@ export default {
       sampleConcept: '',
       sampleRange: null,
       path: null,
+      regionLabel: '',
     }
   },
   computed: {
@@ -235,6 +239,9 @@ export default {
     }
   },
   methods: {
+    setLabel(label) {
+      this.regionLabel = label
+    },
     loadSavedSearch() {
       this.keywordFilters = []
       this.$refs.keyword.removeFilters()

@@ -149,8 +149,9 @@ export default {
         })
       })
     },
-    addToFilter(payload) {
+    addToFilter(payload, label) {
       this.$emit('input', payload)
+      this.$emit('region-label', label)
     },
     emitRemove() {
       this.$emit('removed', 'polygon')
