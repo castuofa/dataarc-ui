@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import gql from 'graphql-tag'
 import KeywordSection from './KeywordContainer.vue'
 import TimelineSection from './TimelineContainer.vue'
 import MapSection from './MapContainer.vue'
@@ -77,6 +78,15 @@ import ResultSection from './ResultContainer.vue'
 import WhySection from './WhyContainer.vue'
 import SearchDialog from './result-components/SearchDialog.vue'
 import VideoModal from './modal-components/VideoModal.vue'
+
+const conceptsQuery = gql`
+  query concepts($id: ID!) {
+    concepts(where: { id: $id }) {
+      id
+      title
+    }
+  }
+`
 
 export default {
   name: 'DataARC',
@@ -155,22 +165,14 @@ export default {
     searchHash() {
       return (this.$route.hash && this.$route.hash.startsWith('#searchId'))
     },
+    filtersChanged() {
+      return Object.keys(this.compiledFilters).length > Object.keys(this.savedSearch.filters).length
+    }
   },
   watch: {
-    filterCount(newVal, oldVal) {
-      if (newVal === 0 && this.searchHash) {
-        this.$router.push('/')
-      }
-    },
     savedSearch(val) {
       if (val) {
-        this.keywordFilters = []
-        this.$refs.keyword.removeFilters()
-        this.temporalFilters = []
-        this.conceptFilters = []
-        this.spatialFilter = false
-        this.filters = {}
-        this.loadFilters(val.filters)
+        this.loadSavedSearch()
       }
     },
     sampleFilter(val) {
@@ -261,13 +263,29 @@ export default {
         if (!this.filters[type]) {
           this.$set(this.filters, type, [])
         }
-        this.$set(this.filters[type], this.filters[type].length, filter.id)
+        if (filter.id) {
+          this.$set(this.filters[type], this.filters[type].length, filter.id)
+        }
+        else {
+          this.conceptFilters = []
+          for (let i = 0; i < filter.length; i++) {
+            this.getConcept(filter[i])
+          }
+        }
       }
       else {
         this.$set(this.filters, type, filter)
+        // If using search Hash & filters change, remove hash
+        if (this.searchHash && this.filtersChanged) {
+          this.$router.push('/')
+        }
       }
     },
     removeFilter(type, index) {
+      // If using search Hash, remove hash immediately
+      if (this.searchHash) {
+        this.$router.push('/')
+      }
       if (type === 'polygon') {
         if (this.spatialFilter) {
           this.spatialFilter = false
@@ -325,6 +343,19 @@ export default {
     },
     resetPath(val) {
       this.path = null
+    },
+    getConcept(id) {
+      this.$apollo.query({
+        query: conceptsQuery,
+        variables: {
+          id,
+        },
+      })
+      .then(({ data }) => {
+        const concept = { id, label: data.concepts[0].title }
+        this.$set(this.conceptFilters, this.conceptFilters.length, concept)
+        this.$set(this.filters.concept, this.filters.concept.length, id)
+      })
     },
   },
 }
