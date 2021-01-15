@@ -40,9 +40,7 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        prependData: `
-          @import "@/scss/style.scss";
-        `,
+        additionalData: `@import "@/scss/style.scss";`
       },
     },
   },
