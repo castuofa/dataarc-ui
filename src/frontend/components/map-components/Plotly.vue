@@ -51,14 +51,24 @@ export default {
       selection: [],
       ids: [],
       colors: [],
+      text: [],
+      selectionLabel: '',
     }
   },
   watch: {
     filteredFeatures(newValue, oldValue) {
-      if (newValue) {
+      if (this.plotlyInstance) {
+        if (newValue) {
+          this.setFilteredFeatures()
+        } else {
+          this.clearFilteredFeatures()
+        }
+      }
+
+    },
+    plotlyInstance(val) {
+      if (val && this.filteredFeatures) {
         this.setFilteredFeatures()
-      } else {
-        this.clearFilteredFeatures()
       }
     },
   },
@@ -75,7 +85,7 @@ export default {
       Object.values(this.plotlyData).forEach((value, index) => {
         this.colorBins[value[0]] = value[1]
       })
-      Plotly.restyle(this.plotlyInstance, 'marker.color', [this.colorBins], [0])
+      Plotly.restyle(this.plotlyInstance, 'marker.color', [this.colorBins], [1])
       this.clearFilterOutline()
     },
     setFilterOutline() {
@@ -83,14 +93,14 @@ export default {
         'lon': [this.outline.lon],
         'lat': [this.outline.lat],
       }
-      Plotly.restyle(this.plotlyInstance, update, [1])
+      Plotly.restyle(this.plotlyInstance, update, [2])
     },
     clearFilterOutline() {
       let update = {
         'lon': [0],
         'lat': [0],
       }
-      Plotly.restyle(this.plotlyInstance, update, [1])
+      Plotly.restyle(this.plotlyInstance, update, [2])
     },
     setFilteredFeatures() {
       if (!this.filters.polygon) {
@@ -107,7 +117,7 @@ export default {
         }
       })
 
-      Plotly.restyle(this.plotlyInstance, 'marker.color', [this.colorBins], [0])
+      Plotly.restyle(this.plotlyInstance, 'marker.color', [this.colorBins], [1])
     },
     getJSON() {
       let options = {
@@ -126,6 +136,7 @@ export default {
         for (const feature in this.iceland.features) {
           this.ids.push(feature)
           this.colors.push(0)
+          this.text.push(this.iceland.features[feature].properties.name)
           this.iceland.features[feature].id = feature
         }
         this.loadMap()
@@ -170,6 +181,33 @@ export default {
 
         const data = [
           {
+            type: 'choroplethmapbox',
+            geojson: this.iceland,
+            locations: this.ids,
+            z: this.colors,
+            text: this.text,
+            marker: {
+              line: {
+                width: 2,
+                color: 'rgba(116, 73, 17, 1)',
+              },
+              opacity: 0.2,
+            },
+            selected: {
+              marker: {
+                opacity: 0.2,
+              },
+            },
+            unselected: {
+              marker: {
+                opacity: 0.2,
+              },
+            },
+            showscale: false,
+            showlegend: false,
+            hovertemplate: '%{text}<extra></extra>',
+          },
+          {
             type: 'scattermapbox',
             ids: unpack(rows, 'id'),
             text: unpack(rows, 'text'),
@@ -193,32 +231,6 @@ export default {
             marker: { size: 10, color: 'black'},
             showlegend: false,
             hoverinfo: 'none'
-          },
-          {
-            type: 'choroplethmapbox',
-            geojson: this.iceland,
-            locations: this.ids,
-            z: this.colors,
-            marker: {
-              line: {
-                width: 2,
-                color: 'rgba(116, 73, 17, 1)',
-              },
-              opacity: 0.2,
-            },
-            selected: {
-              marker: {
-                opacity: 0.2,
-              },
-            },
-            unselected: {
-              marker: {
-                opacity: 0.2,
-              },
-            },
-            showscale: false,
-            showlegend: false,
-            hoverinfo: 'skip',
           },
         ]
 
@@ -263,8 +275,8 @@ export default {
         Plotly.newPlot(vm.mainPlotlyReference, data, layout, config).then((gd) => {
           vm.plotlyInstance = gd
           vm.plotlyData = {}
-          data[0].ids.forEach((value, index) => {
-            vm.plotlyData[value] = [index, data[0].color[index]]
+          data[1].ids.forEach((value, index) => {
+            vm.plotlyData[value] = [index, data[1].color[index]]
           })
 
           gd.addEventListener('mouseup', (evt) => {
@@ -291,7 +303,8 @@ export default {
                     this.outline.lon.push(firstPoint[0])
                     this.outline.lat.push(firstPoint[1])
                     this.setFilterOutline()
-                    this.$emit('filtered', this.selection)
+                    this.selectionLabel = this.iceland.features[i].properties.name
+                    this.$emit('filtered', this.selection, this.selectionLabel)
                     a = coords.length
                     i = this.iceland.features.length
                   }
@@ -308,7 +321,8 @@ export default {
                 this.outline.lon.push(firstPoint[0])
                 this.outline.lat.push(firstPoint[1])
                 this.setFilterOutline()
-                this.$emit('filtered', this.selection)
+                this.selectionLabel = this.iceland.features[i].properties.name
+                this.$emit('filtered', this.selection, this.selectionLabel)
                 i = this.iceland.features.length
               }
             }

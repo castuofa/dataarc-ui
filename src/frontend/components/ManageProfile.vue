@@ -21,7 +21,6 @@
           <searches
             id="searches"
             :userId="currentId"
-            @load-saved-search="emitSearch"
           />
         </b-col>
       </b-row>
@@ -67,9 +66,6 @@ export default {
     scrollToRef() {
       this.$refs.profile.scrollIntoView()
     },
-    emitSearch(search) {
-      this.$emit('load-saved-search', search)
-    }
   }
 }
 </script>

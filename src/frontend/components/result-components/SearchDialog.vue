@@ -47,11 +47,11 @@
                 <b-card-text class="small">
                   <b-list-group data-type="spatial" v-if="filters.polygon" flush>
                     <b-list-group-item
-                      class="d-flex justify-content-between align-items-center text-left bg-secondary"
+                      class="justify-content-between align-items-center text-left bg-secondary"
                       border-variant="light"
                       style="padding:0.5rem;padding-right:0rem;"
                     >
-                      <small>Polygon</small>
+                      <small>{{ regionLabel ? regionLabel : 'Polygon'}}</small>
                       <b-button size="sm" style="padding:0.1rem;" @click="$emit('removed', 'polygon')">
                         <b-icon-x-circle-fill
                           variant="light"
@@ -203,6 +203,10 @@ export default {
     keywordFilters: {
       type: [Array, Boolean],
       required: true,
+    },
+    regionLabel: {
+      type: String,
+      required: true
     },
   },
   data() {

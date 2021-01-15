@@ -16,7 +16,7 @@
           <b-card no-body class="shadow">
             <b-table ref="search" responsive head-variant="light" :fields="fields" :items="searches">
               <template v-slot:cell(title)="row">
-                <b-button variant="light" title="Load Saved Search" @click="$emit('load-saved-search', row.item); routeHome()">{{row.item.title}}</b-button>
+                <b-button variant="light" title="Load Saved Search" @click="routeHome(row.item.id)">{{row.item.title}}</b-button>
               </template>
               <template v-slot:cell(filters)="row">
                 <ul v-for="item, index in row.item.filters" class="text-left" :key="index">
@@ -29,7 +29,7 @@
                 </ul>
               </template>
               <template v-slot:cell(actions)="row" class="actions">
-                <b-button variant="primary" v-text="'Request Download'" @click="requestDownload(row.item)" :disabled="row.item.process"></b-button>
+                <b-button variant="primary" title="Check Email for Link" v-text="'Request Download'" @click="requestDownload(row.item)" :disabled="row.item.process"></b-button>
                 <b-button variant="primary" target="_blank" v-text="'Download'" :disabled="!row.item.path || row.item.process" :href="link(row.item.path)"></b-button>
               </template>
             </b-table>
@@ -116,8 +116,8 @@ export default {
     getSearches() {
       this.$apollo.queries.searchesQuery.refetch()
     },
-    routeHome() {
-      this.$router.replace('/')
+    routeHome(id) {
+      this.$router.push({name: 'frontend', hash: `#searchId=${id}`})
     },
     requestDownload(search) {
       search.process = true
