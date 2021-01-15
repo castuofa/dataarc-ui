@@ -152,8 +152,16 @@ export default {
         this.spatialFilter ? 1 : 0,
       ].reduce((a, b) => a + b, 0)
     },
+    searchHash() {
+      return (this.$route.hash && this.$route.hash.startsWith('#searchId'))
+    },
   },
   watch: {
+    filterCount(newVal, oldVal) {
+      if (newVal === 0 && this.searchHash) {
+        this.$router.push('/')
+      }
+    },
     savedSearch(val) {
       if (val) {
         this.keywordFilters = []

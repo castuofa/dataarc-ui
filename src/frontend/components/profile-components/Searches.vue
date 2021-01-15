@@ -16,7 +16,7 @@
           <b-card no-body class="shadow">
             <b-table ref="search" responsive head-variant="light" :fields="fields" :items="searches">
               <template v-slot:cell(title)="row">
-                <b-button variant="light" title="Load Saved Search" @click="$emit('load-saved-search', row.item); routeHome()">{{row.item.title}}</b-button>
+                <b-button variant="light" title="Load Saved Search" @click="routeHome(row.item.id)">{{row.item.title}}</b-button>
               </template>
               <template v-slot:cell(filters)="row">
                 <ul v-for="item, index in row.item.filters" class="text-left" :key="index">
@@ -116,8 +116,8 @@ export default {
     getSearches() {
       this.$apollo.queries.searchesQuery.refetch()
     },
-    routeHome() {
-      this.$router.replace('/')
+    routeHome(id) {
+      this.$router.push({name: 'frontend', hash: `#searchId=${id}`})
     },
     requestDownload(search) {
       search.process = true

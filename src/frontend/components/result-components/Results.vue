@@ -101,7 +101,10 @@ export default {
     },
     description() {
       return this.descriptionText[this.resultType]
-    }
+    },
+    searchHash() {
+      return (this.$route.hash && this.$route.hash.startsWith('#searchId'))
+    },
   },
   watch: {
     filters: {
@@ -120,7 +123,9 @@ export default {
     },
   },
   mounted() {
-    this.getAllResults()
+    if (!this.searchHash) {
+      this.getAllResults()
+    }
   },
   methods: {
     setResultView(source, category) {
