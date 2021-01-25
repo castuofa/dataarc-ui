@@ -4,10 +4,8 @@ WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install
-COPY .env.stage .env
 COPY . .
-RUN rm .env.production
-RUN yarn build
+RUN yarn stage
 
 # production
 FROM nginx:stable-alpine as production

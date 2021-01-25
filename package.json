@@ -1,6 +1,6 @@
 {
   "name": "dataarc-ui",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "author": "CAST",
   "main": "server.js",
   "description": "The user interface for the DataARC project.",
