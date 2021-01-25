@@ -1,24 +1,26 @@
 <template>
-	<b-card no-body class="m-1">
+	<b-card no-body>
         <template #header>
             <b-icon-command />
             <span class="mx-2">Combinators for query</span>            
         </template>
         <b-overlay :show="busy" rounded="sm">
-			<b-form-radio-group size="sm" buttons v-model="display">           
-				<b-form-radio name="display" value="matched">
-                    <b-badge class="matched">matched {{ uniqueMatchedCombinators.length }}</b-badge>
-                </b-form-radio>
-				<b-form-radio name="display" value="related">
-                    <b-badge class="related">related {{ uniqueRelatedCombinators.length }}</b-badge>
-                </b-form-radio>
-				<b-form-radio name="display" value="contextual">
-                    <b-badge class="contextual">contextual {{ uniqueContextualCombinators.length }}</b-badge>
-                </b-form-radio>
-				<b-form-radio name="display" value="all">
-                    <b-badge variant="dark">all {{ uniqueAllCombinators.length }}</b-badge>
-                </b-form-radio>
-			</b-form-radio-group>
+			<div class="bg-secondary text-center">
+				<b-form-radio-group size="sm" buttons v-model="display" class="border-0">           
+					<b-form-radio name="display" value="matched">
+						<b-badge variant="dark">matched {{ uniqueMatchedCombinators.length }}</b-badge>
+					</b-form-radio>
+					<b-form-radio name="display" value="related">
+						<b-badge variant="dark">related {{ uniqueRelatedCombinators.length }}</b-badge>
+					</b-form-radio>
+					<b-form-radio name="display" value="contextual">
+						<b-badge variant="dark">contextual {{ uniqueContextualCombinators.length }}</b-badge>
+					</b-form-radio>
+					<b-form-radio name="display" value="all">
+						<b-badge variant="dark">all {{ uniqueAllCombinators.length }}</b-badge>
+					</b-form-radio>
+				</b-form-radio-group>
+			</div>
 			<b-list-group id="combinatorList" class="overflow-auto" style="height: 300px;">
 				<b-list-group-item class="py-1" v-for="com in displayedCombinators" 
 					:key="com.id" 
@@ -27,11 +29,13 @@
 					:class="{ hilited: com.hilited }"
 					@mouseover="combinatorMouseover(com)"
 					@mouseout="combinatorMouseout(com)"
-					@click.prevent="combinatorSelected(com)">1					
-					<b-icon-command class="mr-2"/>
-					<span>{{ com.title }}</span>
+					@click.prevent="combinatorSelected(com)">	
+					<b-card-text>			
+						<b-icon-command class="mr-2"/>
+						<span>{{ com.title }}</span>
+					</b-card-text>
 				</b-list-group-item>
-			</b-list-group>
+			</b-list-group>			
         </b-overlay>
     </b-card>
 </template>
@@ -54,15 +58,20 @@ export default {
 			type: String,
 			required: false,
 			default: ""
-		}		
+		}				
 	},
 	watch: {
         conceptIDs: {
             immediate: true,
             handler(newValue) { 
 				let self = this
-				self.busy = true
-				
+				self.queryConcepts = []
+				self.matchedCombinators = []
+				self.relatedCombinators = []
+				self.contextualCombinators = []
+				if(newValue.length == 0) return
+
+				self.busy = true				
 				self.getQueryConcepts(newValue, json => {
 					self.queryConcepts = (json.data.concepts || []) 
 
@@ -83,17 +92,30 @@ export default {
 		},
 
 		hiliteForConceptID: function(newValue) {			
-			// hilight any combinators associated with the specified concept ID
-			this.displayedCombinators.forEach((com, index, array) => {
-                com.hilited = com.concepts.some(con => con.id == newValue)
-                this.$set(array, index, com) // done this way or change is not reactive
-            })
-		}
+			// hilight any combinators associated with the specified concept ID			
+			switch(this.display) {
+				case "matched": 
+					this.doHilite(this.matchedCombinators, newValue)
+					break
+				case "related": 
+					this.doHilite(this.relatedCombinators, newValue)
+					break
+				case "contextual": 
+					this.doHilite(this.contextualCombinators, newValue)
+					break
+				default:
+					this.doHilite(this.matchedCombinators, newValue)
+					this.doHilite(this.relatedCombinators, newValue)
+					this.doHilite(this.contextualCombinators, newValue)
+					break			
+			}			
+		},
+		
     },
 	data() {
 		return {
 			busy: false,
-			display: "matched",
+			display: "all",
 			queryConcepts: [],
 			matchedCombinators: [],
 			relatedCombinators: [],
@@ -166,7 +188,12 @@ export default {
 		}	
 	},
 	methods: {
-
+		doHilite: function(combinators, conceptID) {		
+			combinators.forEach((com, index, array) => {
+                com.hilited = com.concepts.some(con => con.id == conceptID)
+                this.$set(array, index, com) // done this way or change is not reactive
+            })
+		},
 		// ensure uniqueness of an array of combinators
 		getUniqueCombinators(combinators) {
 			const unique = new Map()
@@ -212,7 +239,7 @@ export default {
 				}).join()
 				let qry = `{ 
 					combinators(where: { concepts: [${ids}] }){ 
-						id title concepts{ id } 
+						id title concepts { id } 
 					}}`     
 				self.runQuery(qry, callback)   
 			}
@@ -254,5 +281,5 @@ export default {
 }
 .matched { background: #28A745; }
 .related { background: #FFC101; }
-.contextual { background: #DC3545; }
+.contextual { background: blue; }
 </style>

@@ -1,39 +1,56 @@
 <template>
-	<b-card no-body class="m-1">
+	<b-card no-body>
         <template #header>
-            <b-icon-card-list class="mr-1"/>
+            <b-icon-card-list class="mr-2"/>
             <span>Dataset details</span>                   
         </template>
 		<b-overlay :show="busy" rounded="sm">	
-		<b-card-body class="p-2">
-        <div class="font-weight-bold" >{{ dataset.title }}</div>
-		<b-card-text class="overflow-auto" style="height: 75px;">{{ dataset.description }}</b-card-text>
-		<!--<ul class="p-1" v-for="(c, index) in dataset.combinators" :key="index">
-			<li>{{ c.title }}</li>	
-		</ul>-->
-		<b-tabs content-class="mt-2">
-			<b-tab active>
-				<template v-slot:title>
-					<b-icon-command />
-					<span class="mx-2">Combinators</span>
-					<b-badge variant="info" pill>{{ combinatorsByTitle.length }}</b-badge>
-				</template>
-				<b-list-group id="combinatorList" class="overflow-auto" style="height: 300px;">
-					<b-list-group-item class="py-1" v-for="com in combinatorsByTitle" 
-						:key="com.id" 
-						:alt="com.title"
-						:title="com.title"
-						:class="{ hilited: com.hilited }"
-						@mouseover="combinatorMouseover(com)"
-						@mouseout="combinatorMouseout(com)"
-						@click.prevent="combinatorSelected(com)">
-						<b-icon-command class="mr-2"/>
-						<span>{{ com.title }}</span>
-					</b-list-group-item>
-				</b-list-group>
-			</b-tab>
-		</b-tabs>
-		</b-card-body>
+			<b-card-text class="overflow-auto p-1" style="height: 100px;">
+				<div class="font-weight-bold">{{ (dataset || {}).title || "" }}</div>
+				<div>{{ (dataset || {}).description || "" }}</div>
+			</b-card-text>
+
+
+			<b-tabs content-class="mx-2 my-0 p-0 border-0">
+				<b-tab active>
+					<template v-slot:title>
+						<b-icon-command />
+						<span class="mx-2">Combinators</span>
+						<b-badge variant="dark">{{ combinatorsByTitle.length }}</b-badge>																	
+					</template>
+				
+			<!--<ul class="p-1" v-for="(c, index) in dataset.combinators" :key="index">
+				<li>{{ c.title }}</li>	
+			</ul>-->
+			<!--<b-card-text class="p-1">
+				<b-icon-command />
+				<span class="mx-2">Combinators</span>
+				<b-badge variant="dark">{{ combinatorsByTitle.length }}</b-badge>
+			</b-card-text>-->
+			<!--<b-tabs content-class="mt-2 p-0">
+				<b-tab active>
+					<template v-slot:title>
+						<b-icon-command />
+						<span class="mx-2">Combinators</span>
+						<b-badge variant="info" pill>{{ combinatorsByTitle.length }}</b-badge>
+					</template>-->
+					<b-list-group id="combinatorList" class="overflow-auto" style="height: 300px;">
+						<b-list-group-item class="py-1" v-for="com in combinatorsByTitle" 
+							:key="com.id" 
+							:alt="com.title || ''"
+							:title="com.title || ''"
+							:class="{ hilited: com.hilited }"
+							@mouseover="combinatorMouseover(com)"
+							@mouseout="combinatorMouseout(com)"
+							@click.prevent="combinatorSelected(com)">
+							<b-card-text>
+								<b-icon-command class="mr-2"/>
+								<span>{{ com.title }}</span>
+							</b-card-text>
+						</b-list-group-item>
+					</b-list-group>
+				</b-tab>
+			</b-tabs>			
 		</b-overlay>	
 	</b-card>
 </template>
@@ -64,14 +81,14 @@ export default {
 			dataset: {}
 		}
 	},
-	computed: {
+	computed: { 
 		combinatorsByTitle: function() {
 			return ((this.dataset || {}).combinators || []).slice()
-				.map(com => { // convert from array of ID to array of obj
-					com.concepts = (com.concepts || []).map(id => { return {id: id}})
-					return com
-				})
-                .sort((a, b) => a.title.localeCompare(b.title))
+				//.map(com => { // convert from array of ID to array of obj
+					//com.concepts = (com.concepts || []).map(id => { return {id: id}})
+					//return com
+				//})
+                .sort((a, b) => (a.title || "").localeCompare(b.title || ""))
         }	
 	},
 	watch: {
@@ -79,7 +96,7 @@ export default {
             immediate: true,
             handler(newValue) {
 				if(newValue !== "")                
-					this.getDataset2(newValue)            
+					this.getDataset(newValue)            
             }        
 		},
 
@@ -91,29 +108,10 @@ export default {
             })
 		}
 	},
-	methods: {
-        /*getDataset(id){
+	methods: {    		
+		getDataset(id){
 			let self = this
 			
-			try {
-				self.busy = true			
-				let uri = `${self.baseURI}/datasets/${self.clean(encodeURIComponent(id))}`
-				self.getJSON(uri, data => {
-					self.dataset = data
-					self.busy = false
-				})
-			}
-			catch(err) { 
-				console.log(err) 
-				self.busy = false
-			}			
-		},*/
-
-		// API call above returned extra data - retrieving 
-		// what we need, seems faster in informal testing 
-		getDataset2(id){
-			let self = this
-			console.log(id)
 			try {
 				self.busy = true
 				let cleanID = self.clean(encodeURIComponent(id))			

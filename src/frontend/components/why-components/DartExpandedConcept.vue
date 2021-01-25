@@ -1,7 +1,7 @@
 <template>
     <details>
         <summary>
-            <DartConcept 
+            <DartConcept
                 :id="currentConcept.id"
                 :label="currentConcept.title"
                 :group="currentConcept.group"
@@ -14,7 +14,7 @@
         <details class="ml-2">
             <summary>
                 <span class="font-italic text-secondary mx-1">Related</span> 
-				<b-badge class="font-italic m-1" variant="secondary" pill>{{ related.length }}</b-badge>
+				<b-badge class="font-italic m-1" variant="dark">{{ related.length }}</b-badge>
             </summary>
              <b-list-group class="ml-2">
                 <li v-for="(c, index) in related" :key="index">
@@ -33,7 +33,7 @@
         <details class="ml-2">
             <summary>
                 <span class="font-italic text-secondary mx-1">Contextual</span> 
-				<b-badge class="font-italic m-1" variant="secondary" pill>{{ contextual.length }}</b-badge>
+				<b-badge class="font-italic m-1" variant="dark">{{ contextual.length }}</b-badge>
             </summary>
             <b-list-group class="ml-3">
                 <li v-for="(c, index) in contextual" :key="index">

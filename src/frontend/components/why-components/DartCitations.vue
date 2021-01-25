@@ -1,5 +1,5 @@
 <template>
-    <b-list-group id="citationList" class="overflow-auto" style="height: 200px;">
+    <b-list-group id="citationList" class="overflow-auto" style="height: 300px;">
         <b-list-group-item v-for="(c, index) in citations" :key="index"> 
             <b-icon-card-text class="mr-2"/>
             <span v-html="enhance(c)"/>
