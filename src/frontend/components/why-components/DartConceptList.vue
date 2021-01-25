@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-form-radio-group size="sm" buttons v-model="listDisplay">           
+        <b-form-radio-group buttons v-model="listDisplay">           
             <b-form-radio name="listDisplay" value="listed">listed</b-form-radio>
             <b-form-radio name="listDisplay" value="grouped">grouped</b-form-radio>
             <b-form-radio name="listDisplay" value="inline">inline</b-form-radio>
@@ -31,7 +31,7 @@
                     <details>
                         <summary>
                             <span class="font-italic text-secondary">{{ group.replace("_", " ") }}</span> 
-                            <b-badge class="font-italic m-1" variant="secondary" pill>{{ conceptsInGroup(group).length }}</b-badge><br> 
+                            <b-badge class="font-italic m-1" variant="dark">{{ conceptsInGroup(group).length }}</b-badge><br> 
                         </summary> 
                         <DartConcept v-for="(concept, cindex) in conceptsInGroup(group)"
                             :key="cindex"
@@ -85,11 +85,17 @@ export default {
             type: Boolean,
             required: false,
             default: true
+        },
+        display: {
+            type: String,
+            required: false,
+            default: "listed",
+            validator: value => ["listed", "grouped", "inline"].includes(value)      
         }			
 	},
 	data: function() {
 		return {
-            listDisplay: "listed" // "listed" | "grouped" | "inline" 
+            listDisplay: this.display // "listed" | "grouped" | "inline" 
         }
     },
     watch: {},

@@ -1,7 +1,11 @@
 <template>
-    <div class="shadow border p-3" >
-        <b-card-group deck>
-            <DartQueryConcepts 
+    <!--<div class="shadow border p-3" >-->
+    <b-container>
+    <b-row>
+    <b-col>
+        <div class="p-3 shadow">
+        <b-card-group deck class="my-3">
+            <DartQueryConcepts
                 :conceptIDs="filter.concept" 
                 :hilitedConceptIDs="hilitedConceptIDs"
                 @conceptMouseover="conceptMouseover" 
@@ -14,10 +18,11 @@
                 @combinatorMouseout="combinatorMouseout"
                 @combinatorSelected="combinatorSelected"/>     
             <DartQueryResults 
+                :conceptIDs="filter.concept"
                 :filter="filter"
                 @datasetSelected="datasetSelected"/>               
         </b-card-group> 
-        <b-card-group deck>   
+        <b-card-group deck class="my-5">   
             <DartConceptDetails 
                 :conceptID="selectedConceptID" 
                 :hilitedConceptIDs="hilitedConceptIDs"
@@ -37,7 +42,11 @@
                 @combinatorMouseout="combinatorMouseout"
                 @combinatorSelected="combinatorSelected"/> 
         </b-card-group>
-    </div>
+        </div>
+    </b-col>
+    </b-row>
+    
+    </b-container>
 </template>
 
 <script>
@@ -62,8 +71,7 @@ export default {
 	props: {
         filter: {
             type: Object,
-            required: false,
-            default: () => {}
+            required: true
         }        	
 	},
 	data() {
@@ -97,8 +105,8 @@ export default {
         combinatorSelected(com) {
             this.selectedCombinatorID = com.id
         },
-        datasetSelected(d) {
-            this.selectedDatasetID = d.dataset_id
+        datasetSelected(id) {
+            this.selectedDatasetID = id
         },
     },
 	// lifecycle hooks

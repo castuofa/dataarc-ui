@@ -1,24 +1,26 @@
 <template>
-	<b-card no-body class="m-1">
+	<b-card no-body>
 		<template #header>
 			<b-icon-command class="mr-2"/>
 			<span>Combinator details</span>			
 		</template>	
 		<b-overlay :show="busy" rounded="sm">	
-        <b-card-body class="p-2">
-			<div class="font-weight-bold">{{ combinator.title }}</div>
-			<b-card-text class="overflow-auto" style="height: 75px;">{{ combinator.description }}</b-card-text>
-			<b-tabs content-class="mt-2">
+        	<b-card-text class="overflow-auto p-1" style="height: 100px;">
+				<div class="font-weight-bold">{{ combinator.title }}</div>
+				<div>{{ combinator.description }}</div>
+			</b-card-text>
+			<b-tabs fill content-class="mx-2 my-0 p-0 border-0">
 				<b-tab active>
 					<template v-slot:title>
 						<b-icon-tags />
 						<span class="mx-2">Concepts</span>
-						<b-badge variant="info" pill>{{ $refs.dartCombinatorConcepts.concepts.length }}</b-badge> 																	
+						<b-badge variant="dark">{{ $refs.dartCombinatorConcepts.concepts.length }}</b-badge> 																	
 					</template>
 					<DartConceptList
 						ref="dartCombinatorConcepts" 
 						:concepts="uniqueConcepts" 
 						:showExpanded="false"
+						display="inline"
 						:hilitedConceptIDs="hilitedConceptIDs"
 						@conceptMouseover="conceptMouseover" 
 						@conceptMouseout="conceptMouseout" 
@@ -28,14 +30,13 @@
 					<template v-slot:title>
 						<b-icon-card-text />
 						<span class="mx-2">Citations</span>
-						<b-badge variant="info" pill>{{ $refs.dartCitations.citations.length }}</b-badge> 						    
+						<b-badge variant="dark">{{ $refs.dartCitations.citations.length }}</b-badge> 						    
 					</template>
 					<DartCitations 
 						ref="dartCitations" 
 						:citation="combinator.citation"></DartCitations>
 				</b-tab>    
-			</b-tabs>		
-		</b-card-body>
+			</b-tabs>			
 		</b-overlay>		
     </b-card>
 </template>
@@ -105,7 +106,7 @@ export default {
 			try {
 				self.busy = true			
 				self.combinator = {}
-				let uri = `${self.baseURI}/combinators/${self.clean(encodeURIComponent(id))}`
+				let uri = `${self.$apiUrl}/combinators/${self.clean(encodeURIComponent(id))}`
 				self.getJSON(uri, data => {
 					self.combinator = data
 					self.busy = false
@@ -133,4 +134,3 @@ export default {
 <style scoped>
 
 </style>
-<!--note see https://github.com/vuejs/awesome-vue for lots of VUE examples and resources-->

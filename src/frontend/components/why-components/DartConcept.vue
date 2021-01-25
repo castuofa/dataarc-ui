@@ -2,8 +2,8 @@
     <span>
         <b-badge
             pill 
-            class="border mr-1"
-            variant="secondary" 
+            class="border mt-1 mr-1 px-1 text-dark border-dark"  
+            variant="light" 
             :class="{ hilited: hilited }" 
             role="button" 
             @mouseover="mouseover"
@@ -14,8 +14,7 @@
             <b-icon-tag class="mr-1"/>
             <slot>{{ cleanLabel }}</slot>
         </b-badge>
-        <span class="font-italic text-secondary ml-2" 
-            v-if="showGroup">{{ cleanGroup }}</span>       
+        <span class="font-italic text-secondary ml-2" v-if="showGroup">{{ cleanGroup }}</span>       
     </span>
 </template>
 
@@ -68,6 +67,7 @@ export default {
     },
     methods: {
         mouseover() {
+            this.lilited
             this.$emit('mouseover', { conceptID: this.cleanId })
         },
         mouseout() {

@@ -1,7 +1,7 @@
 const DartCommon = { 
   data() {
 		return {
-      baseURI: "https://api.data-arc.org"
+      //baseURI: "https://api.data-arc.org"
     }
 	},  
   methods: {
@@ -68,7 +68,7 @@ const DartCommon = {
           
     // run GraphQL query 
     runQuery(query, callback, error) {
-      let uri = `${this.baseURI}/graphql?query=${encodeURIComponent(query)}`
+      let uri = `${this.$apiUrl}/graphql?query=${encodeURIComponent(query)}`
       this.getJSON(uri, callback, error)
     }
   }

@@ -1,33 +1,38 @@
 <template>
-    <b-card no-body class="m-1">
+    <b-card no-body>
         <template #header>
             <b-icon-tags />
             <span class="mx-2">Concepts for query</span>
         </template>
-        <b-overlay :show="busy">	
-            <b-form-radio-group size="sm" buttons v-model="display">           
-				<b-form-radio name="display" value="matched">
-                    <b-badge class="matched">matched {{ uniqueMatchedConcepts.length }}</b-badge>
-                </b-form-radio>
-				<b-form-radio name="display" value="related">
-                    <b-badge class="related">related {{ uniqueRelatedConcepts.length }}</b-badge>
-                </b-form-radio>
-				<b-form-radio name="display" value="contextual">
-                    <b-badge class="contextual">contextual {{ uniqueContextualConcepts.length }}</b-badge>
-                </b-form-radio>
-				<b-form-radio name="display" value="all">
-                    <b-badge variant="dark">all {{ uniqueAllConcepts.length }}</b-badge>
-                </b-form-radio>
-			</b-form-radio-group>
-			<DartConceptList
-                class="p-1"
-                ref="dartConceptList" 
-                :concepts="displayedConcepts" 
-                :showExpanded="false"
-                :hilitedConceptIDs="hilitedConceptIDs"
-                @conceptMouseover="conceptMouseover" 
-                @conceptMouseout="conceptMouseout" 
-                @conceptSelected="conceptSelected"/> 
+        <b-overlay :show="busy">
+            <div class="bg-secondary text-center">	
+                <b-form-radio-group size="sm" buttons v-model="display" class="border-0">           
+                    <b-form-radio name="display" value="matched">
+                        <b-badge variant="dark">matched {{ uniqueMatchedConcepts.length }}</b-badge>
+                    </b-form-radio>
+                    <b-form-radio name="display" value="related">
+                        <b-badge variant="dark">related {{ uniqueRelatedConcepts.length }}</b-badge>
+                    </b-form-radio>
+                    <b-form-radio name="display" value="contextual">
+                        <b-badge variant="dark">contextual {{ uniqueContextualConcepts.length }}</b-badge>
+                    </b-form-radio>
+                    <b-form-radio name="display" value="all">
+                        <b-badge variant="dark">all {{ uniqueAllConcepts.length }}</b-badge>
+                    </b-form-radio>
+                </b-form-radio-group>
+            </div>
+            <b-card-text>
+                <DartConceptList
+                    class="p-1"
+                    ref="dartConceptList" 
+                    :concepts="displayedConcepts" 
+                    display="inline"
+                    :showExpanded="false"
+                    :hilitedConceptIDs="hilitedConceptIDs"
+                    @conceptMouseover="conceptMouseover" 
+                    @conceptMouseout="conceptMouseout" 
+                    @conceptSelected="conceptSelected"/>
+            </b-card-text> 
         </b-overlay>	      
     </b-card>
 </template>
@@ -137,7 +142,9 @@ export default {
 
 		getConcepts(conceptIDs) {
             // get (selected) properties of the query concepts 
-            let self = this            
+            let self = this 
+            self.concepts = []
+            if(conceptIDs.length == 0) return          
             
              try {
                 self.busy = true
@@ -200,5 +207,5 @@ li {
 }
 .matched { background: #28A745; }
 .related { background: #FFC101; }
-.contextual { background: #DC3545; }
+.contextual { background: blue; }
 </style>
