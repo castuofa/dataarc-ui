@@ -14,6 +14,21 @@
       <b-row class="justify-content-center">
         <b-col sm="6" class="mt-3 mb-3">
           <b-card class="shadow">
+            <b-row
+              v-if="role.type === 'authenticated' || role.type === 'public'"
+              class="justify-content-md-center"
+            >
+              <b-col sm="8">
+                <b-button
+                  target="_blank"
+                  href="https://www.data-arc.org/request-to-be-a-data-contributor/"
+                  class="btn btn-dark btn-lg btn-block"
+                >
+                  Request to be a Contributor
+                </b-button>
+              </b-col>
+            </b-row>
+            <br>
             <form
               @submit.prevent="handleSubmit"
             >
